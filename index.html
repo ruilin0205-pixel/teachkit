@@ -82,6 +82,7 @@ body{font-feature-settings:"kern" 1,"liga" 1;text-rendering:optimizeLegibility}
 .report-card-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}.report-card{min-height:178px;display:flex;flex-direction:column}.report-card .report-actions{margin-top:auto}.report-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.report-tabs button{min-height:36px!important;padding:8px 12px!important}
 .empty-state{padding:20px!important;border-radius:18px!important;background:linear-gradient(180deg,#fbfcfd,#f7f8fa)!important;color:#697386!important}.empty-state h3{margin:0 0 6px;font-size:15px;color:#344054}.empty-state p{margin:0;color:#7b8190;font-size:13px}.empty-action .actions{margin-top:14px}.empty-action button{min-height:38px!important}
 .student-status{background:#fbfcfd}.status-present{background:#f8fffb}.status-absent{background:#fffafa}.status-excluded{background:#fafafa}
+.participation-check{display:flex;align-items:flex-start;gap:8px;margin-top:10px;padding:9px 10px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:13px;color:var(--muted);line-height:1.35}.participation-check input{width:16px;height:16px;margin-top:1px;accent-color:var(--ink)}.participation-check b{display:block;color:var(--ink);font-size:13px}.participation-check.disabled{opacity:.55;background:#fafafa}
 #recordList .empty-state{display:block}.history span,#recordList span{font-size:12.5px!important}
 .footer-brand{padding-top:10px;border-top:1px solid var(--line-2);max-width:1120px;margin-left:auto!important;margin-right:auto!important}
 @media(max-width:920px){.report-card-grid{grid-template-columns:1fr!important}.report-card{min-height:auto}.save-status{display:none}.record-kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
@@ -429,6 +430,80 @@ input,textarea,select{
 }
 </style>
 
+
+<style id="draw-gift-background-style">
+/* Colorful gift background for Draw page only — all classroom functions remain unchanged. */
+#drawView{position:relative;overflow:hidden;isolation:isolate}
+#drawView .draw-gift-bg{
+  position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+  background:
+    radial-gradient(circle at 10% 18%, rgba(255,219,106,.09), transparent 12%),
+    radial-gradient(circle at 88% 22%, rgba(255,161,191,.09), transparent 14%),
+    radial-gradient(circle at 18% 84%, rgba(143,208,255,.09), transparent 14%),
+    radial-gradient(circle at 82% 80%, rgba(170,225,178,.09), transparent 16%)
+}
+#drawView .draw-gift-content{position:relative;z-index:1;display:grid;place-items:center;width:100%;min-height:inherit}
+
+/* Cartoon gift icons: same 🎁 shape feeling, but each gift has a different bright color palette. */
+#drawView .gift-emoji{
+  position:absolute;z-index:0;pointer-events:none;user-select:none;overflow:visible;
+  width:54px;height:48px;border-radius:13px 13px 12px 12px;opacity:.34;
+  color:transparent;text-indent:-9999px;
+  background:
+    linear-gradient(90deg, transparent 0 43%, var(--gift-ribbon) 43% 57%, transparent 57% 100%),
+    linear-gradient(180deg, var(--gift-lid) 0 24%, var(--gift-box) 24% 100%);
+  box-shadow:inset 0 -7px 0 rgba(0,0,0,.06),0 12px 22px rgba(16,24,40,.08);
+  animation:giftEmojiFloat var(--gift-dur,12s) ease-in-out infinite;
+}
+#drawView .gift-emoji::before{
+  content:"";position:absolute;left:-4px;right:-4px;top:10px;height:9px;border-radius:999px;
+  background:var(--gift-ribbon);box-shadow:0 4px 10px rgba(16,24,40,.06)
+}
+#drawView .gift-emoji::after{
+  content:"";position:absolute;left:50%;top:-16px;width:18px;height:18px;border:5px solid var(--gift-ribbon);
+  border-radius:70% 40% 70% 40%;transform:translateX(-50%) rotate(45deg);
+  box-shadow:-14px 14px 0 -5px var(--gift-ribbon),14px -14px 0 -5px var(--gift-ribbon)
+}
+#drawView .gift-emoji.g1{left:2%;top:8%;--gift-dur:12.5s;animation-delay:-1.2s;--gift-box:#ff6b8a;--gift-lid:#ff9fb2;--gift-ribbon:#ffd166}
+#drawView .gift-emoji.g2{left:6%;bottom:10%;--gift-dur:15.8s;animation-delay:-5.8s;--gift-box:#4dabf7;--gift-lid:#8bd3ff;--gift-ribbon:#fff3b0}
+#drawView .gift-emoji.g3{left:15%;top:72%;--gift-dur:13.4s;animation-delay:-3.1s;--gift-box:#7c5cff;--gift-lid:#b9a7ff;--gift-ribbon:#ffdf6e}
+#drawView .gift-emoji.g4{left:24%;top:6%;--gift-dur:14.9s;animation-delay:-7.2s;--gift-box:#2ec4b6;--gift-lid:#85eadf;--gift-ribbon:#ff9f1c}
+#drawView .gift-emoji.g5{left:34%;bottom:12%;--gift-dur:14.2s;animation-delay:-2.5s;--gift-box:#ff9f1c;--gift-lid:#ffc46b;--gift-ribbon:#5eead4}
+#drawView .gift-emoji.g6{right:2%;top:10%;--gift-dur:14.5s;animation-delay:-4.3s;--gift-box:#22c55e;--gift-lid:#86efac;--gift-ribbon:#f472b6}
+#drawView .gift-emoji.g7{right:8%;bottom:8%;--gift-dur:11.9s;animation-delay:-2.1s;--gift-box:#f43f5e;--gift-lid:#fda4af;--gift-ribbon:#60a5fa}
+#drawView .gift-emoji.g8{right:16%;top:74%;--gift-dur:16.8s;animation-delay:-8s;--gift-box:#06b6d4;--gift-lid:#67e8f9;--gift-ribbon:#fde047}
+#drawView .gift-emoji.g9{right:25%;top:5%;--gift-dur:12.8s;animation-delay:-5s;--gift-box:#a855f7;--gift-lid:#d8b4fe;--gift-ribbon:#34d399}
+#drawView .gift-emoji.g10{right:33%;bottom:12%;--gift-dur:13.8s;animation-delay:-1.9s;--gift-box:#fb7185;--gift-lid:#fecdd3;--gift-ribbon:#38bdf8}
+#drawView .gift-emoji.g11{left:42%;top:10%;--gift-dur:15.1s;animation-delay:-6.5s;--gift-box:#f97316;--gift-lid:#fed7aa;--gift-ribbon:#c084fc}
+#drawView .gift-emoji.g12{right:42%;bottom:8%;--gift-dur:14.6s;animation-delay:-4.6s;--gift-box:#14b8a6;--gift-lid:#99f6e4;--gift-ribbon:#fbbf24}
+
+#drawView .sparkle{position:absolute;width:16px;height:16px;z-index:0;opacity:.24;pointer-events:none;animation:sparkleTwinkle var(--spark-dur,6s) ease-in-out infinite}
+#drawView .sparkle::before,#drawView .sparkle::after{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(255,212,92,.95);border-radius:999px}
+#drawView .sparkle::before{width:4px;height:16px}
+#drawView .sparkle::after{width:16px;height:4px}
+#drawView .s1{left:10%;top:28%;--spark-dur:4.8s;animation-delay:-1.2s}
+#drawView .s2{left:20%;top:88%;--spark-dur:5.6s;animation-delay:-3.5s}
+#drawView .s3{left:39%;top:16%;--spark-dur:6.1s;animation-delay:-2.2s}
+#drawView .s4{left:46%;top:84%;--spark-dur:5.2s;animation-delay:-1.1s}
+#drawView .s5{right:12%;top:34%;--spark-dur:5.4s;animation-delay:-1.7s}
+#drawView .s6{right:24%;top:86%;--spark-dur:4.9s;animation-delay:-4.1s}
+#drawView .s7{right:41%;top:18%;--spark-dur:6.4s;animation-delay:-2.9s}
+#drawView .s8{right:47%;top:82%;--spark-dur:5.8s;animation-delay:-3.2s}
+@keyframes giftEmojiFloat{0%{transform:translate3d(0,0,0) rotate(-6deg) scale(1)}25%{transform:translate3d(10px,-18px,0) rotate(5deg) scale(1.05)}50%{transform:translate3d(-8px,-30px,0) rotate(-4deg) scale(.98)}75%{transform:translate3d(8px,-14px,0) rotate(4deg) scale(1.03)}100%{transform:translate3d(0,0,0) rotate(-6deg) scale(1)}}
+@keyframes sparkleTwinkle{0%,100%{transform:scale(.7);opacity:.10}50%{transform:scale(1.22);opacity:.32}}
+@media (max-width: 900px){
+  #drawView .gift-emoji{width:44px;height:40px;opacity:.28}
+  #drawView .gift-emoji.g4,#drawView .gift-emoji.g5,#drawView .gift-emoji.g9,#drawView .gift-emoji.g10,#drawView .gift-emoji.g11,#drawView .gift-emoji.g12{display:none}
+}
+@media (max-width: 640px){
+  #drawView .gift-emoji{width:34px;height:31px;opacity:.22;border-radius:9px}
+  #drawView .gift-emoji.g3,#drawView .gift-emoji.g8{display:none}
+  #drawView .sparkle{opacity:.16}
+}
+@media print{#drawView .draw-gift-bg{display:none}}
+@media (prefers-reduced-motion: reduce){#drawView .gift-emoji,#drawView .sparkle{animation:none}}
+</style>
+
 </head>
 <body data-screen="home">
 <!-- ClassKit release candidate: existing features preserved; final polish for layout, reports, mobile, and release readiness. -->
@@ -627,6 +702,11 @@ input,textarea,select{
             <option value="fair">Fair priority 公平优先</option>
             <option value="repeat">Allow repeat 可重复</option>
           </select>
+          <label>Draw Pool｜抽奖范围</label>
+          <select id="drawPoolMode" onchange="saveData(); updateDrawPoolHint();">
+            <option value="engaged">Precise Draw｜精准抽奖：仅已出勤且勾选课堂参与</option>
+            <option value="present">Present Students｜全班出勤抽奖：全部已出勤学生</option>
+          </select>
         </div>
       </details>
 
@@ -671,15 +751,40 @@ input,textarea,select{
 
     <section class="card stage class-stage-clean">
       <div id="drawView" class="result">
-        <div>
-          <div class="status" id="drawStatus">Ready to draw｜准备抽奖</div>
-          <div class="big" id="winner">Ready?</div>
-          <div class="mid" id="prize">Click Start 点击开始</div>
-          <div class="hint">支持不重复抽奖、公平优先和奖品权重。<br>No repeat, fair priority and weighted rewards.</div>
-          <div class="actions" style="justify-content:center;margin-top:16px">
-            <button class="primary" onclick="drawReward()"><b>Start Draw</b><small>开始抽奖</small></button>
+        <div class="draw-gift-bg" aria-hidden="true">
+          <span class="gift-emoji g1"></span>
+          <span class="gift-emoji g2"></span>
+          <span class="gift-emoji g3"></span>
+          <span class="gift-emoji g4"></span>
+          <span class="gift-emoji g5"></span>
+          <span class="gift-emoji g6"></span>
+          <span class="gift-emoji g7"></span>
+          <span class="gift-emoji g8"></span>
+          <span class="gift-emoji g9"></span>
+          <span class="gift-emoji g10"></span>
+          <span class="gift-emoji g11"></span>
+          <span class="gift-emoji g12"></span>
+          <div class="sparkle s1"></div>
+          <div class="sparkle s2"></div>
+          <div class="sparkle s3"></div>
+          <div class="sparkle s4"></div>
+          <div class="sparkle s5"></div>
+          <div class="sparkle s6"></div>
+          <div class="sparkle s7"></div>
+          <div class="sparkle s8"></div>
+        </div>
+        <div class="draw-gift-content">
+          <div>
+            <div class="status" id="drawStatus">Ready to draw｜准备抽奖</div>
+            <div class="big" id="winner">Ready?</div>
+            <div class="mid" id="prize">Click Start 点击开始</div>
+            <div class="hint" id="drawPoolHint">精准抽奖：仅从已出勤且勾选课堂参与的学生中抽取。<br>Precise draw: Present + participation checked only.</div>
+            <div class="hint">支持不重复抽奖、公平优先和奖品权重。<br>No repeat, fair priority and weighted rewards.</div>
+            <div class="actions" style="justify-content:center;margin-top:16px">
+              <button class="primary" onclick="drawReward()"><b>Start Draw</b><small>开始抽奖</small></button>
+            </div>
+            <div class="undo-bar"><button class="ghost" onclick="undoLastReward()">撤销上次抽奖｜Undo Reward</button></div>
           </div>
-          <div class="undo-bar"><button class="ghost" onclick="undoLastReward()">撤销上次抽奖｜Undo Reward</button></div>
         </div>
       </div>
 
@@ -1090,6 +1195,8 @@ let timer = null;
 let seconds = 180;
 let pending = "";
 let attendance = {};
+let manualParticipation = {};
+let selectedDrawPoolMode = "engaged";
 let pendingTemplate = null;
 let lastPickRecord = null;
 let lastRewardRecord = null;
@@ -1122,6 +1229,7 @@ function beginTodayAttendance(){
   currentSessionDate = new Date().toLocaleDateString();
   sessionStarted = false;
   attendance = {};
+  manualParticipation = {};
   records = [];
   scores = {};
   participation = {};
@@ -1131,7 +1239,8 @@ function beginTodayAttendance(){
   donePick = [];
   actionStack = [];
   saveData();
-  renderAttendance();
+  if($("drawPoolMode")) $("drawPoolMode").value = selectedDrawPoolMode || "engaged";
+renderAttendance();
   updateSessionStatus();
   if(typeof updateDashboardStatusCenter === "function") updateDashboardStatusCenter();
   if(typeof renderOperationalContext === "function") renderOperationalContext();
@@ -1199,24 +1308,76 @@ function toast(text){
 function beep(freq = 640, duration = 100){
   if(!sound) return;
   try{
-    const audio = new AudioContext();
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if(!AudioCtx) return;
+    const audio = new AudioCtx();
     const osc = audio.createOscillator();
     const gain = audio.createGain();
+    const volume = Math.max(0.02, Math.min(0.09, (soundSettings?.volume || 0.55) * 0.08));
     osc.frequency.value = freq;
-    gain.gain.value = 0.045;
+    osc.type = "sine";
+    gain.gain.setValueAtTime(volume, audio.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audio.currentTime + duration / 1000);
     osc.connect(gain);
     gain.connect(audio.destination);
     osc.start();
-    setTimeout(() => { osc.stop(); audio.close(); }, duration);
+    setTimeout(() => { osc.stop(); audio.close(); }, duration + 20);
   }catch(error){}
 }
 function successSound(){ beep(820,120); setTimeout(() => beep(1040,120),140); }
 function failSound(){ beep(220,150); }
+
+/* Draw rolling sound: light suspense chimes while the reward is rolling.
+   It is only triggered by the user clicking Start Draw, so browser autoplay rules are respected. */
+function drawRollingSoundStep(step = 0){
+  if(!sound) return;
+  try{
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if(!AudioCtx) return;
+    const audio = new AudioCtx();
+    const t = audio.currentTime;
+    const volume = Math.max(0.018, Math.min(0.075, (soundSettings?.volume || 0.55) * 0.075));
+    const baseNotes = [523,587,659,784,880,988,1046];
+    const freq = baseNotes[step % baseNotes.length] * (step > 14 ? 1.08 : 1);
+
+    const main = audio.createOscillator();
+    const shimmer = audio.createOscillator();
+    const gain = audio.createGain();
+    const shimmerGain = audio.createGain();
+
+    main.type = "triangle";
+    shimmer.type = "sine";
+    main.frequency.setValueAtTime(freq, t);
+    main.frequency.exponentialRampToValueAtTime(freq * 1.08, t + 0.055);
+    shimmer.frequency.setValueAtTime(freq * 2, t);
+
+    gain.gain.setValueAtTime(0.001, t);
+    gain.gain.exponentialRampToValueAtTime(volume, t + 0.008);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.09);
+    shimmerGain.gain.setValueAtTime(volume * 0.28, t);
+    shimmerGain.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+
+    main.connect(gain);
+    shimmer.connect(shimmerGain);
+    gain.connect(audio.destination);
+    shimmerGain.connect(audio.destination);
+    main.start(t);
+    shimmer.start(t);
+    main.stop(t + 0.1);
+    shimmer.stop(t + 0.1);
+    setTimeout(() => audio.close(), 150);
+  }catch(error){}
+}
+function drawFinalSurpriseSound(){
+  if(!sound) return;
+  [784,988,1175,1568].forEach((freq, index) => setTimeout(() => beep(freq, 95), index * 75));
+}
 const STORAGE_KEY = "classKitSystem";
 const LEGACY_STORAGE_KEY = "classroomToolkitSystem";
 function saveData(){
   persistCurrentClassState();
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({classes,currentClass,records,scores,participation,currentTemplate,attendance,currentSessionDate,sessionStarted,soundSettings,themeMode,lessonArchives}));
+  if($("drawPoolMode")) selectedDrawPoolMode = $("drawPoolMode").value;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({classes,currentClass,records,scores,participation,manualParticipation,selectedDrawPoolMode,currentTemplate,attendance,currentSessionDate,sessionStarted,soundSettings,themeMode,lessonArchives}));
   if($("saveStatus")) $("saveStatus").textContent = "Saved " + new Date().toLocaleTimeString() + "｜已保存";
 }
 function loadData(){
@@ -1228,6 +1389,8 @@ function loadData(){
     records = data.records || [];
     scores = data.scores || {};
     participation = data.participation || {};
+    manualParticipation = data.manualParticipation || {};
+    selectedDrawPoolMode = data.selectedDrawPoolMode || selectedDrawPoolMode || "engaged";
     currentTemplate = data.currentTemplate || "Default";
     attendance = data.attendance || attendance || {};
     soundSettings = data.soundSettings || soundSettings;
@@ -1245,6 +1408,7 @@ function loadData(){
 renderAttendance();
 renderLeaderboard();
 updateSessionStatus();
+  updateDrawPoolHint();
 }
 function goName(name){
   document.body.dataset.screen = name;
@@ -1519,6 +1683,7 @@ function currentStateSnapshot(){
     records: Array.isArray(records) ? records : [],
     scores: scores || {},
     participation: participation || {},
+    manualParticipation: manualParticipation || {},
     attendance: attendance || {},
     currentTemplate: currentTemplate || "Default",
     currentSessionDate: currentSessionDate || "",
@@ -1538,6 +1703,7 @@ function restoreClassState(name){
   records = Array.isArray(state.records) ? state.records : [];
   scores = state.scores || {};
   participation = state.participation || {};
+  manualParticipation = state.manualParticipation || {};
   attendance = state.attendance || {};
   currentTemplate = state.currentTemplate || "Default";
   currentSessionDate = state.currentSessionDate || "";
@@ -1553,6 +1719,7 @@ function ensureMultiClassMigration(data){
       records: data.records || records || [],
       scores: data.scores || scores || {},
       participation: data.participation || participation || {},
+      manualParticipation: data.manualParticipation || manualParticipation || {},
       attendance: data.attendance || attendance || {},
       currentTemplate: data.currentTemplate || currentTemplate || "Default",
       currentSessionDate: data.currentSessionDate || currentSessionDate || "",
@@ -1565,7 +1732,7 @@ function ensureMultiClassMigration(data){
   }
 }
 function resetSessionStateForNewClass(){
-  records = []; scores = {}; participation = {}; attendance = {}; currentTemplate = "Default";
+  records = []; scores = {}; participation = {}; manualParticipation = {}; attendance = {}; currentTemplate = "Default";
   currentSessionDate = ""; sessionStarted = false; lessonArchives = []; doneDraw = []; donePick = []; actionStack = [];
 }
 function renderCurrentClassPanel(){
@@ -1605,11 +1772,39 @@ function attendanceGroups(){
   const present = students.filter(name => ["present","late"].includes(normalizedStatus(name)));
   const absent = students.filter(name => normalizedStatus(name) === "absent");
   const excluded = students.filter(name => normalizedStatus(name) === "excluded");
+  const engaged = present.filter(name => !!manualParticipation[name]);
   const notYet = present.filter(name => !participation[name]);
-  return {students,present,absent,excluded,notYet};
+  return {students,present,absent,excluded,engaged,notYet};
 }
 function availableStudents(){
   return attendanceGroups().present;
+}
+function drawEligibleStudents(){
+  const g = attendanceGroups();
+  const mode = $("drawPoolMode") ? $("drawPoolMode").value : "present";
+  return mode === "engaged" ? g.engaged : g.present;
+}
+function updateDrawPoolHint(){
+  const hint = $("drawPoolHint");
+  const select = $("drawPoolMode");
+  if(!hint || !select) return;
+  const g = attendanceGroups();
+  if(select.value === "engaged"){
+    hint.innerHTML = `精准抽奖：仅从已出勤且勾选课堂参与的学生中抽取。Eligible: ${g.engaged}/${g.present} Present students.<br>Precise draw: Present + participation checked only.`;
+  }else{
+    hint.innerHTML = `全班出勤抽奖：从全部已出勤学生中抽取，缺勤学生自动排除。Eligible: ${g.present}/${g.students} students.<br>Present-students draw: all Present students only; Absent students are excluded.`;
+  }
+}
+function setManualParticipation(name, checked){
+  if(!["present","late"].includes(normalizedStatus(name))){
+    manualParticipation[name] = false;
+  }else{
+    manualParticipation[name] = !!checked;
+  }
+  saveData();
+  renderAttendance();
+  updateDrawPoolHint();
+  updateDashboardStatusCenter();
 }
 function ensureAttendance(){
   currentStudents().forEach(name => { if(!attendance[name]) attendance[name] = "present"; });
@@ -1620,6 +1815,7 @@ function updateAttendanceSummary(){
     <div class="kpi"><b>${g.students.length}</b><p>Total｜全班</p></div>
     <div class="kpi"><b>${g.present.length}</b><p>Present｜在场</p></div>
     <div class="kpi"><b>${g.absent.length}</b><p>Absent｜缺勤</p></div>
+    <div class="kpi"><b>${g.engaged.length}</b><p>Participation Checked｜已勾选参与</p></div>
     <div class="kpi"><b>${g.excluded.length}</b><p>Excluded｜本轮不参与</p></div>
   `;
   if($("attendanceSummary")) $("attendanceSummary").innerHTML = html;
@@ -1631,6 +1827,7 @@ function updateSessionStatus(){
       <span class="badge">Today｜今天：${currentSessionDate || new Date().toLocaleDateString()}</span>
       <span class="badge">Present｜在场：${g.present.length}</span>
       <span class="badge">Absent｜缺勤：${g.absent.length}</span>
+      <span class="badge">Checked｜已勾选：${g.engaged.length}</span>
       <span class="badge">Template｜模板：${escapeHtml(currentTemplate)}</span>
       <span class="badge">Round｜轮次：${Math.max(donePick.length, doneDraw.length) + 1}</span>
     `;
@@ -1696,11 +1893,15 @@ function renderAttendance(){
     return `
     <div class="student-status status-${status}">
       <b>${escapeHtml(name)}</b>
-      <select onchange="attendance['${safeForJs(name)}']=this.value; saveData(); renderAttendance(); renderRecords(); renderClassCards(); updateSessionStatus();">
+      <select onchange="attendance['${safeForJs(name)}']=this.value; if(this.value!=='present' && this.value!=='late'){ manualParticipation['${safeForJs(name)}']=false; } saveData(); renderAttendance(); renderRecords(); renderClassCards(); updateSessionStatus(); updateDrawPoolHint();">
         <option value="present" ${status==="present"?"selected":""}>Present 在场</option>
         <option value="absent" ${status==="absent"?"selected":""}>Absent 缺勤</option>
         <option value="excluded" ${status==="excluded"?"selected":""}>Excluded 本轮不参与</option>
       </select>
+      <label class="participation-check ${status==="present"?"":"disabled"}">
+        <input type="checkbox" ${manualParticipation[name]?"checked":""} ${status==="present"?"":"disabled"} onchange="setManualParticipation('${safeForJs(name)}', this.checked)">
+        <span><b>Class Participation｜课堂参与</b>认真听课 / 跟随课堂学习</span>
+      </label>
     </div>
   `;}).join("") || '<div class="empty-state empty-action"><h3>No students yet｜还没有学生名单</h3><p>请先在班级管理中添加学生名单；添加后才能进行出勤、点名、分组和报告。</p><div class="actions"><button class="primary" onclick="goName(\'class\')"><b>Add Students</b><small>添加学生</small></button></div></div>';
   if($("attendanceList")) $("attendanceList").innerHTML = markup;
@@ -1791,14 +1992,15 @@ function pushAction(type, payload){
 }
 function drawReward(){
   const mode = $("drawMode").value;
-  let names = availableStudents();
+  let names = drawEligibleStudents();
   if(mode === "norepeat") names = names.filter(name => !doneDraw.includes(name));
   if(mode === "fair") names = leastParticipated(names);
   const rewards = parseRewards();
   if(!names.length || !rewards.length){
+    const poolMode = $("drawPoolMode") ? $("drawPoolMode").value : "present";
     $("winner").textContent = "No Data";
-    $("prize").innerHTML = "请先添加学生和奖品<br>Add students and rewards first";
-    toast("请先添加学生和奖品");
+    $("prize").innerHTML = poolMode === "engaged" ? "请先勾选已出勤学生的课堂参与<br>Check participation for Present students first" : "请先确认出勤学生和奖品<br>Confirm Present students and rewards first";
+    toast(poolMode === "engaged" ? "请先勾选课堂参与学生" : "请先确认出勤学生和奖品");
     return;
   }
   $("drawStatus").textContent = "Drawing｜正在抽奖";
@@ -1807,7 +2009,7 @@ function drawReward(){
   const rolling = setInterval(() => {
     $("winner").textContent = randomItem(names);
     $("prize").textContent = randomItem(rewards);
-    beep(520,35);
+    drawRollingSoundStep(count);
     count++;
     if(count > 22){
       clearInterval(rolling);
@@ -1819,7 +2021,7 @@ function drawReward(){
       $("drawView").classList.remove("shake");
       doneDraw.push(winner);
       markParticipation(winner, "reward draw");
-      noPrize ? failSound() : successSound();
+      noPrize ? failSound() : drawFinalSurpriseSound();
       lastRewardRecord = {winner, prize};
       record("reward", winner + " → " + prize, noPrize ? 0 : 1);
       pushAction("reward", {winner, prize});
