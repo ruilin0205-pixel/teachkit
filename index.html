@@ -1,0 +1,3095 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#14151a">
+<title>ClassKit — Classroom Interaction & Reports</title>
+<meta name="description" content="ClassKit is a focused classroom tool for attendance, interaction, and lesson reports.">
+<style>
+:root{
+  --bg:#f7f8fa;--surface:#ffffff;--surface-2:#f3f4f6;--ink:#111827;--muted:#667085;--muted-2:#98a2b3;
+  --line:#e5e7eb;--line-2:#eef0f3;--brand:#111827;--accent:#a87435;--safe:#2f8f63;--danger:#b8423a;
+  --radius:18px;--radius-sm:12px;--shadow:0 10px 28px rgba(16,24,40,.06);
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font:15px/1.58 var(--tk-font-ui, Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Noto Sans SC", "Microsoft YaHei", Arial, sans-serif);letter-spacing:-.01em}body.dark{--bg:#0f1115;--surface:#171a21;--surface-2:#20242c;--ink:#f8fafc;--muted:#a3aab7;--muted-2:#737b8a;--line:#2b3039;--line-2:#242933}body.theme-minimal{--accent:#374151}body.theme-young{--accent:#d97706}body.theme-dark-projector{--bg:#0d1117;--surface:#111827;--surface-2:#1f2937;--ink:#f9fafb;--muted:#cbd5e1;--line:#334155}
+button,input,textarea,select{font:inherit}button{min-height:38px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--surface);color:var(--ink);font-weight:660;cursor:pointer;padding:9px 13px;transition:background .16s ease,border-color .16s ease,transform .16s ease}button:hover{background:var(--surface-2);transform:translateY(-1px)}button small{display:block;margin-top:1px;font-size:11px;font-weight:520;color:inherit;opacity:.72}button.primary,.main-nav button.on,.tabs button.on,.mobile-bottom-nav button.on{background:var(--brand);border-color:var(--brand);color:#fff}button.ghost{background:var(--surface);color:var(--ink)}button.gold{background:#fff8ea;border-color:#ead7b5;color:#7a4f1c}button.safe{background:#f0fbf5;border-color:#cdebd9;color:#17613e}button.danger{background:#fff;border-color:#f0d0cd;color:var(--danger)}button.danger:hover{background:#fff7f6}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid rgba(17,24,39,.12);outline-offset:2px}
+h1,h2,h3,p{margin-top:0}h1{font-size:clamp(34px,5vw,58px);line-height:1.03;letter-spacing:-.055em;font-weight:760;margin:6px 0 12px}h2{font-size:18px;line-height:1.25;letter-spacing:-.025em;font-weight:720;margin:0 0 12px}h3{font-size:15px;line-height:1.3;letter-spacing:-.015em;font-weight:680;margin:0 0 6px}p{color:var(--muted);line-height:1.64}.lead{font-size:17px;line-height:1.64;max-width:660px;color:#475467}.small-lead{font-size:15px}.muted{color:var(--muted)}.eyebrow{font-size:12px;letter-spacing:.02em;color:var(--accent);font-weight:700;margin-bottom:8px}label{display:block;margin:10px 0 6px;font-weight:670;color:var(--ink)}input,textarea,select{width:100%;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--surface);color:var(--ink);padding:10px 12px;box-shadow:none}textarea{min-height:106px;resize:vertical}
+.top{position:sticky;top:0;z-index:40;background:rgba(247,248,250,.88);border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(18px)}.topin{max-width:1120px;margin:0 auto;padding:12px 18px;display:flex;align-items:center;gap:14px}.brand{font-size:15px;font-weight:760;letter-spacing:-.025em;white-space:nowrap}.brand span{font-weight:620;color:var(--muted)}.save-status{font-size:12px;color:var(--muted-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.main-nav{display:flex;gap:6px;margin-left:auto}.main-nav button{min-height:34px;padding:0 11px;border-radius:999px;background:transparent;color:var(--muted);font-size:12.5px;font-weight:600;border-color:transparent}.app{max-width:1120px;margin:0 auto;padding:20px 18px 96px}.screen{display:none}.screen.on{display:block}.screen.on{animation:fade .14s ease}@keyframes fade{from{opacity:.85;transform:translateY(4px)}to{opacity:1;transform:none}}
+.hero,.minimal-hero,.product-hero-v18,.card,.result,.modebar,.session-strip,.tabs,.box,.report-box,.archive-item,.report-card,.template-card,.status-tile,.readiness-item,.insight-item,.workflow-step,.value-card,.team,.modal-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:none}.hero,.minimal-hero{padding:22px;margin-bottom:14px}.card{padding:18px}.product-hero-v18{display:grid;grid-template-columns:minmax(0,1.05fr) 290px;gap:18px;padding:32px;margin-bottom:14px;align-items:center}.hero-copy-v18{background:transparent;border:none;padding:0;min-height:0}.hero-panel-v18{background:transparent;border:none;padding:0;display:grid;gap:10px}.mini-stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;grid-template-columns:30px 1fr;gap:3px 10px;align-items:center}.mini-stat span{grid-row:1/3;width:30px;height:30px;border-radius:10px;background:var(--brand);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:760}.mini-stat b{font-size:14px}.mini-stat small{font-size:12px;color:var(--muted)}.grid{display:grid;gap:12px}.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.grid.four,.record-kpis{grid-template-columns:repeat(4,minmax(0,1fr))}.row,.actions,.hero-actions-clean,.compact-actions,.report-actions,.mini-actions,.sound-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.class-home,.layout,.report-main-grid{display:grid;gap:12px}.layout{grid-template-columns:330px minmax(0,1fr)}.simplified-dashboard-grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:12px;align-items:start}.simplified-dashboard-grid .card:nth-child(3){grid-column:1/-1}.report-card-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:12px 0}.report-main-grid{grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr)}.compact-card{padding:16px}.advanced-panel summary{cursor:pointer;font-weight:700}.badge{display:inline-flex;align-items:center;gap:6px;background:var(--surface-2);border:1px solid var(--line);color:#475467;border-radius:999px;padding:6px 9px;font-size:11.5px;font-weight:620}.kpi{text-align:center}.kpi b{display:block;font-size:26px;line-height:1.05;letter-spacing:-.04em}.kpi p{margin:6px 0 0;font-size:12px}.status-center{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.status-tile,.readiness-item,.insight-item,.archive-item{padding:12px;background:#fafafa;border-radius:14px}.status-tile b{font-size:23px;font-weight:740;display:block}.status-tile span,.readiness-item p,.insight-item p{font-size:12px;color:var(--muted)}.teacher-note-mini{border-radius:14px;background:#f9fafb;border:1px solid var(--line);color:#4b5563;padding:12px;margin-top:12px}.template-grid,.clean-template-grid,.teams,.class-cards,.reward-cards{display:grid;gap:12px}.clean-template-grid{grid-template-columns:repeat(5,minmax(0,1fr))}.template-card{padding:14px;cursor:pointer}.template-card:hover,.report-card:hover{background:#fafafa}.report-card{padding:18px;cursor:pointer}.report-actions{margin-top:12px}.report-actions button{flex:1}.danger-actions-clean{margin-top:12px;display:flex;justify-content:flex-end}.danger-actions-clean .danger{font-size:13px;min-height:34px}.report,.report-box{padding:14px;white-space:pre-wrap;background:#fafafa;border-radius:14px;border:1px solid var(--line);color:var(--ink)}#recordList,.history,.archive-list,.participation,.guide-list,.insight-list,.readiness-list{display:grid;gap:8px}.history{margin-top:12px}.history span,#recordList span{display:block;padding:9px 10px;border:1px solid var(--line);border-radius:12px;background:#fafafa;color:var(--muted);font-size:13px}
+.tabs{display:grid;grid-template-columns:repeat(5,1fr);padding:6px;position:sticky;top:62px;z-index:5;margin:12px 0}.tabs button{padding:10px 8px;border-radius:12px;background:transparent;color:var(--muted);min-height:52px;border-color:transparent}.modebar{padding:10px 12px;display:flex;justify-content:space-between;align-items:center;gap:8px}.modebar .switch{display:flex;gap:6px}.session-strip{padding:10px 12px;margin:10px 0;color:var(--muted);font-size:13px}.simplified-tools-hero{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;padding:18px}.simplified-tools-hero h1{font-size:32px;margin:2px 0 4px}.stage{padding:18px}.result{min-height:440px;display:grid;place-items:center;text-align:center}.big{font-size:clamp(48px,8vw,88px);letter-spacing:-.06em;font-weight:780;color:var(--ink)}.mid{font-size:22px;color:#374151;font-weight:620}.hint,.status{color:var(--muted);font-size:13px}.timer{font-size:clamp(60px,12vw,120px);font-weight:780;letter-spacing:-.06em}.winner-team{padding:14px;border:1px solid #ead7b5;border-radius:14px;background:#fff8ea;color:#7a4f1c;font-weight:760;margin-bottom:12px}.setting-card{border:1px solid var(--line);border-radius:14px;background:var(--surface);margin-bottom:8px;overflow:hidden}.setting-card summary{padding:12px 14px;cursor:pointer;font-weight:680}.setting-body{padding:0 14px 14px}.reward-card{border:1px solid var(--line);border-radius:14px;padding:12px;background:#fafafa}.class-stage-clean{overflow:hidden}.editor{display:none}body.edit .editor{display:block}body.edit .layout{grid-template-columns:330px minmax(0,1fr)}body:not(.edit) .layout{grid-template-columns:1fr}.undo-bar{margin-top:10px}.status-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}.status-card{border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--surface)}.status-card select{margin-top:8px}.status-present{border-color:#cdebd9}.status-absent{border-color:#f1c6c0}.status-excluded{border-color:#d8dce2}.attendance-summary{margin-top:12px}.attendance-summary .kpi{background:#fafafa;border:1px solid var(--line);border-radius:14px;padding:12px}.modal{position:fixed;inset:0;background:rgba(15,23,42,.42);display:none;place-items:center;z-index:60;padding:18px}.modal.show{display:grid}.modal-card{max-width:560px;width:min(100%,560px);padding:20px}.box{width:min(100%,560px);padding:20px}.class-card,.class-editor,.attendance-callout,.template-preview{border:1px solid var(--line);border-radius:14px;background:#fafafa;padding:14px}.class-card h3{font-size:20px}.class-cards{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}.reward-builder{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}.participation-item{border:1px solid var(--line);border-radius:12px;background:#fafafa;padding:10px}.help,.flow-step,.workflow-step{padding:12px}.value-grid-v18,.workflow{display:grid;gap:10px}.value-grid-v18{grid-template-columns:repeat(3,1fr)}.workflow{grid-template-columns:repeat(6,1fr)}.toast{position:fixed;left:50%;bottom:88px;transform:translateX(-50%) translateY(16px);background:var(--ink);color:#fff;border-radius:999px;padding:10px 14px;opacity:0;pointer-events:none;transition:.2s;z-index:80}.toast.show{opacity:1;transform:translateX(-50%)}
+#class .steps{display:none}#class > .card > .card{display:none}.footer-brand{font-size:12px;color:var(--muted-2);margin:28px 0 6px;text-align:center}.mobile-bottom-nav{display:none;position:fixed;left:12px;right:12px;bottom:12px;z-index:35;grid-template-columns:repeat(5,1fr);gap:2px;border-radius:18px;background:rgba(255,255,255,.96);border:1px solid var(--line);box-shadow:var(--shadow);padding:6px}.mobile-bottom-nav button{font-size:10.5px;border:none;border-radius:12px;min-height:42px;color:var(--muted);background:transparent;padding:6px 2px}.class-mode-controls{display:none}
+.class-mode-active{background:#fff}.class-mode-active .top,.class-mode-active #tools .hero,.class-mode-active .session-strip,.class-mode-active .tabs,.class-mode-active .modebar,.class-mode-active .editor,.class-mode-active .mobile-bottom-nav{display:none}.class-mode-active .app{max-width:100%;padding:18px}.class-mode-active #tools .layout{display:block}.class-mode-active .stage{max-width:1080px;margin:0 auto;border:none;background:#fff;padding:0}.class-mode-active .result{min-height:calc(100vh - 116px);border:none;background:#fff}.class-mode-active .result .actions,.class-mode-active .hint,.class-mode-active .undo-bar,.class-mode-active #history{display:none}.class-mode-active .big{font-size:clamp(72px,12vw,150px)}.class-mode-active .mid{font-size:clamp(22px,3vw,38px)}.class-mode-active .class-mode-controls{position:fixed;display:flex;gap:8px;left:50%;right:auto;bottom:18px;transform:translateX(-50%);padding:8px;border-radius:16px;background:rgba(255,255,255,.92);border:1px solid var(--line);box-shadow:var(--shadow)}.class-mode-active .class-mode-controls button{min-width:92px}.theme-dark-projector.class-mode-active .stage,.theme-dark-projector.class-mode-active .result{background:#0d1117}.theme-dark-projector.class-mode-active .class-mode-controls{background:rgba(17,24,39,.92)}
+@media(max-width:920px){.main-nav{display:none}.mobile-bottom-nav{display:grid}.app{padding-bottom:96px}.product-hero-v18,.simplified-dashboard-grid,.layout,.report-card-grid,.report-main-grid,.grid.two,.grid.three,.clean-template-grid{grid-template-columns:1fr}.simplified-dashboard-grid .card:nth-child(3){grid-column:auto}.status-center{grid-template-columns:repeat(2,minmax(0,1fr))}.simplified-tools-hero{grid-template-columns:1fr}.compact-actions{margin-top:10px}.tabs{top:0}}
+@media(max-width:560px){.app{padding:12px 12px 88px}.product-hero-v18,.hero,.minimal-hero,.card{border-radius:16px;padding:16px}h1{font-size:32px}.lead{font-size:15px}.status-center,.record-kpis{grid-template-columns:1fr 1fr}.tabs{gap:4px;padding:4px}.tabs button{font-size:12px;padding:8px 2px;min-height:48px}.tabs small{font-size:10px}.hero-actions-clean,.compact-actions,.actions{display:grid;grid-template-columns:1fr}.actions button,.hero-actions-clean button{width:100%}.report-actions{display:grid;grid-template-columns:1fr}.class-mode-active .app{padding:10px}.class-mode-active .class-mode-controls{left:10px;right:10px;transform:none;display:grid;grid-template-columns:repeat(4,1fr)}.class-mode-active .class-mode-controls button{min-width:0;padding:10px 4px;font-size:12px}.mobile-bottom-nav button{font-size:10px}.mobile-bottom-nav button br{display:none}}
+
+/* V25 final polish */
+.setting-card-clean{padding:0;overflow:hidden;margin-bottom:10px}.setting-card-clean summary{list-style:none;cursor:pointer;padding:15px 18px;font-weight:720;letter-spacing:-.015em;display:flex;align-items:center;justify-content:space-between}.setting-card-clean summary::-webkit-details-marker{display:none}.setting-card-clean summary::after{content:"+";font-weight:720;color:var(--muted)}.setting-card-clean[open] summary::after{content:"–"}.setting-card-clean .setting-body{padding:0 18px 18px}.setting-card-clean .actions{margin-top:4px}.home-minimal .lead{max-width:720px}.simple-steps .mini-stat{box-shadow:none}.class-mode-active .class-mode-controls{bottom:20px}.class-mode-active .class-mode-controls button{min-width:86px;font-size:13px}.class-mode-active .result{min-height:calc(100vh - 102px)}.mobile-bottom-nav button{font-size:11px;font-weight:650}.danger-zone{border-color:#f3d6d2;background:#fffdfc}
+@media(max-width:560px){.setting-card-clean summary{padding:14px 15px}.setting-card-clean .setting-body{padding:0 15px 15px}.mobile-bottom-nav{left:10px;right:10px;bottom:10px}.mobile-bottom-nav button{font-size:10.5px}.class-mode-active .class-mode-controls{grid-template-columns:repeat(4,1fr)}}
+
+
+/* ClassKit release polish */
+.brand em{margin-left:7px;padding:2px 6px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-style:normal;font-size:10.5px;font-weight:680;vertical-align:middle;background:var(--surface)}
+.release-note{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:14px;background:#fafafa;padding:12px 14px;margin-top:12px;color:var(--muted);font-size:13px}.release-note b{color:var(--ink)}
+.report-actions button b{display:block;font-size:13px}.report-actions button small{font-size:10.5px}.report-actions button{min-height:44px}
+.class-mode-controls button small{display:none}.class-mode-active .class-mode-controls button{font-weight:760}
+.footer-brand{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap}.footer-brand .version{padding:2px 7px;border:1px solid var(--line);border-radius:999px;color:var(--muted);background:var(--surface);font-weight:650}
+@media(max-width:560px){.release-note{display:block}.brand em{display:none}.report-actions button{min-height:42px}}
+
+
+/* Multi-class product layer */
+.current-class-panel{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;margin:14px 0 12px;padding:16px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,#ffffff,#fbfcfd)}
+.current-class-panel h2{margin:0 0 4px}.current-class-panel p{margin:0}.class-meta-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.class-card.is-current{border-color:#111827!important;background:#fff}.class-card .class-card-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.class-card .current-pill{font-size:11px;font-weight:760;border-radius:999px;background:#111827;color:#fff;padding:4px 8px;white-space:nowrap}.multi-class-layout{margin-top:12px}.class-editor-panel{margin-top:16px;border-top:1px solid var(--line);padding-top:16px}.class-select-empty{color:var(--muted)}
+@media(max-width:720px){.current-class-panel{grid-template-columns:1fr}.current-class-panel .actions{justify-content:flex-start}}
+</style>
+
+<style id="product-v26-polish">
+/* V26: product polish without adding new features */
+:root{--product-font:"Inter","SF Pro Text","SF Pro Display",-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC","Microsoft YaHei",Arial,sans-serif}
+body{font-family:var(--product-font)!important;background:#f7f8fa!important}
+.brand{letter-spacing:-.035em!important}
+button{min-height:42px!important;letter-spacing:-.01em!important}
+button b{display:block;font-size:14px;line-height:1.15!important}
+button small{display:block;margin-top:3px;font-size:11px;opacity:.72;line-height:1.15!important}
+.actions button,.hero-actions-clean button,.report-actions button{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.main-nav button{min-height:34px!important}
+.product-hero-v18{gap:18px!important}
+.hero-copy-v18,.hero-panel-v18,.card,.hero,.minimal-hero{border-color:#e8eaef!important}
+.hero-copy-v18{min-height:390px!important}
+.hero-panel-v18{gap:10px!important}
+.mini-stat{background:#fbfcfd!important}
+#tools .hint{max-width:640px;margin-left:auto;margin-right:auto;color:#7b8190!important;font-size:13px!important}
+#tools .result{padding:28px!important}
+.modebar{margin:10px 0!important}
+.class-card .actions{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px!important}
+.class-card .actions button{width:100%!important}
+.setting-card summary{font-weight:700!important}
+.report-card p,.compact-card p{line-height:1.55!important}
+.empty-state{padding:18px;border:1px dashed #d8dce4;border-radius:16px;background:#fbfcfd;color:#7b8190}
+@media(max-width:720px){.class-card .actions{grid-template-columns:repeat(2,1fr)!important}.product-hero-v18{gap:12px!important}button b{font-size:13.5px}}
+</style>
+
+<style id="product-v29-final-polish">
+/* V29: final product-grade cleanup without adding features */
+:root{--shadow-soft:0 14px 34px rgba(16,24,40,.045)}
+body{font-feature-settings:"kern" 1,"liga" 1;text-rendering:optimizeLegibility}
+.topin{padding-top:10px!important;padding-bottom:10px!important}.brand{font-size:16px!important}.save-status{max-width:420px}
+.main-nav button{font-size:13px!important;padding:0 13px!important;color:#5f6673!important}.main-nav button.on{color:#fff!important}
+.product-hero-v18{box-shadow:var(--shadow-soft)!important}.hero-copy-v18{min-height:340px!important}.hero-copy-v18 .muted{max-width:640px}
+.card,.hero,.minimal-hero,.product-hero-v18,.result,.modebar,.session-strip{border-color:#e7eaf0!important}
+.card:hover,.report-card:hover,.template-card:hover{border-color:#d9dee8!important}
+.kpi b,.status-tile b{font-variant-numeric:tabular-nums}.record-kpis .card{padding:16px 12px!important}
+.report-card-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}.report-card{min-height:178px;display:flex;flex-direction:column}.report-card .report-actions{margin-top:auto}.report-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.report-tabs button{min-height:36px!important;padding:8px 12px!important}
+.empty-state{padding:20px!important;border-radius:18px!important;background:linear-gradient(180deg,#fbfcfd,#f7f8fa)!important;color:#697386!important}.empty-state h3{margin:0 0 6px;font-size:15px;color:#344054}.empty-state p{margin:0;color:#7b8190;font-size:13px}.empty-action .actions{margin-top:14px}.empty-action button{min-height:38px!important}
+.student-status{background:#fbfcfd}.status-present{background:#f8fffb}.status-absent{background:#fffafa}.status-excluded{background:#fafafa}
+.participation-check{display:flex;align-items:flex-start;gap:8px;margin-top:10px;padding:9px 10px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:13px;color:var(--muted);line-height:1.35}.participation-check input{width:16px;height:16px;margin-top:1px;accent-color:var(--ink)}.participation-check b{display:block;color:var(--ink);font-size:13px}.participation-check.disabled{opacity:.55;background:#fafafa}
+#recordList .empty-state{display:block}.history span,#recordList span{font-size:12.5px!important}
+.footer-brand{padding-top:10px;border-top:1px solid var(--line-2);max-width:1120px;margin-left:auto!important;margin-right:auto!important}
+@media(max-width:920px){.report-card-grid{grid-template-columns:1fr!important}.report-card{min-height:auto}.save-status{display:none}.record-kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:560px){.record-kpis{gap:8px}.record-kpis .card{padding:13px 8px!important}.kpi b{font-size:22px!important}.report-tabs button{flex:1}.topin{padding-left:14px!important;padding-right:14px!important}}
+</style>
+<style id="add-class-entry-only">
+/* Single visible Add Class entry: no layout changes */
+.add-class-quick-entry{position:fixed;right:22px;bottom:92px;z-index:75;border-color:#111827!important;background:#111827!important;color:#fff!important;box-shadow:0 12px 28px rgba(17,24,39,.18)!important}
+.add-class-quick-entry small{color:#fff!important;opacity:.78!important}
+body:not([data-screen="home"]):not([data-screen="class"]):not([data-screen="dashboard"]) .add-class-quick-entry{display:none!important}
+.class-mode-active .add-class-quick-entry{display:none!important}
+@media(max-width:560px){.add-class-quick-entry{right:14px;bottom:118px;min-height:40px!important;padding:8px 12px!important}.add-class-quick-entry b{font-size:13px!important}.add-class-quick-entry small{display:none!important}}
+</style>
+
+<style id="product-v32-final-ux-refine">
+/* V32: product-level simplification and clearer teaching context, without adding new core features */
+:root{--tk-card-bg:#fff;--tk-soft:#fafbfc;--tk-text-soft:#5f6673}
+body{background:#f6f7f9!important}
+.top{box-shadow:none!important}.topin{max-width:1160px!important}.app{max-width:1160px!important}
+.hero,.minimal-hero,.card,.result,.modebar,.session-strip,.tabs{background:var(--tk-card-bg)!important}
+.hero,.minimal-hero,.card{padding:20px!important}.product-hero-v18{padding:30px!important}
+h1{font-weight:780!important}h2{font-weight:740!important}.lead,p.muted{letter-spacing:-.005em}
+.current-class-panel{background:#fff!important;border-color:#e6e9ef!important;padding:18px!important}
+.class-card{background:#fff!important}.class-card.is-current{box-shadow:inset 0 0 0 1px #111827!important}
+.class-card .meta{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0 12px}.class-card .badge{background:#fafafa!important}
+.class-card .actions button{min-height:40px!important}.class-card .actions button.ghost:last-child{color:#6b7280!important}
+.tool-current-class{margin-top:10px;display:flex;gap:7px;flex-wrap:wrap}
+.tool-current-class .badge{background:#f9fafb!important;color:#344054!important}
+.tool-current-class .warning-badge{background:#fff8ea!important;border-color:#ead7b5!important;color:#7a4f1c!important}
+.readiness-item,.insight-item,.status-tile,.teacher-note-mini{background:#fbfcfd!important;border-color:#eaedf2!important}
+.report-card{background:#fff!important}.report-card h2{margin-bottom:8px!important}.report-card p{font-size:13px!important;color:#667085!important}
+.report,.report-box{background:#fbfcfd!important;border-color:#eaedf2!important}
+.add-class-quick-entry{right:20px!important;bottom:92px!important;border-color:#d7dce5!important;background:rgba(255,255,255,.96)!important;color:#111827!important;box-shadow:0 10px 24px rgba(16,24,40,.10)!important;backdrop-filter:blur(14px)}
+.add-class-quick-entry small{color:#667085!important;opacity:1!important}
+.add-class-quick-entry:hover{border-color:#111827!important;background:#fff!important}
+.class-editor-panel{background:#fbfcfd;border:1px solid #eaedf2;border-radius:16px;padding:16px!important;margin-top:16px!important}
+.class-editor-panel .eyebrow{margin-bottom:5px}.class-editor-panel h2{margin-bottom:6px}.class-editor-panel p{margin-bottom:0}
+.status-grid{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))!important}.student-status{padding:12px!important}
+@media(max-width:720px){.simplified-dashboard-grid,.report-main-grid{grid-template-columns:1fr!important}.tool-current-class{margin-top:8px}.hero,.minimal-hero,.card{padding:16px!important}.add-class-quick-entry{right:14px!important;bottom:116px!important}}
+</style>
+
+<style>
+/* Product refinement v33: clearer class center, report context, cleaner class-mode */
+.class-page-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-top:18px}
+.class-page-heading h2{margin:0 0 4px}.class-page-heading p{margin:0}
+.class-editor-panel{scroll-margin-top:88px}
+.class-editor-panel .required-pill{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:4px 8px;margin:8px 6px 0 0;font-size:11.5px;font-weight:650;color:var(--muted);background:var(--surface)}
+.report-context-strip{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:12px 0;padding:14px 16px}
+.report-context-strip .context-left{display:flex;gap:7px;flex-wrap:wrap}.report-context-strip p{margin:0;font-size:13px}
+.class-mode-active .tool-current-class{display:none!important}
+.global-context-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px;padding:10px 12px;border:1px solid var(--line);background:rgba(255,255,255,.68);border-radius:14px;color:var(--muted);font-size:12.5px}
+.global-context-bar .context-title{font-weight:750;color:var(--ink);margin-right:2px}
+.empty-state h3{margin:0 0 6px}.empty-state p{margin:0;color:var(--muted);line-height:1.55}
+@media(max-width:560px){.class-page-heading{display:block}.class-page-heading .actions{margin-top:10px}.report-context-strip{display:block}.report-context-strip .context-left{margin-top:8px}.global-context-bar{font-size:12px}}
+</style>
+
+
+<style id="release-final-polish-v35">
+/* V35: final release polish only — no new core features */
+textarea{min-height:112px;line-height:1.55;resize:vertical}
+#classRoster{min-height:160px}.report textarea,#teacherNote{min-height:92px}
+.report-card-grid .report-card{display:flex;flex-direction:column}.report-card .report-actions{margin-top:auto}
+.empty-state{border:1px dashed #d9dee8;border-radius:14px;background:#fbfcfd;padding:14px}
+.empty-action{background:#fff}.warning-badge{background:#fff8ea!important;border-color:#ead7b5!important;color:#7a4f1c!important}
+.danger-zone .setting-body p{margin-top:0}.danger-note{font-size:12.5px;color:#8a4b43;background:#fff7f6;border:1px solid #f0d0cd;border-radius:12px;padding:10px 12px;margin-bottom:10px}
+#confirmInput{letter-spacing:.08em;text-transform:uppercase}.confirm-helper{font-size:12.5px;color:var(--muted);margin-top:8px}
+@media(max-width:560px){
+  button{min-height:44px}.report-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.report-tabs button{padding:9px 4px;font-size:12px}
+  .add-class-quick-entry{bottom:104px!important}.app:has(input:focus),.app:has(textarea:focus){padding-bottom:18px!important}
+  body:has(input:focus) .add-class-quick-entry,body:has(textarea:focus) .add-class-quick-entry{display:none!important}
+  body:has(input:focus) .mobile-bottom-nav,body:has(textarea:focus) .mobile-bottom-nav{display:none!important}
+  .class-editor-panel{scroll-margin-top:18px}.report-context-strip .context-left{display:grid!important;grid-template-columns:1fr 1fr;gap:6px}
+}
+</style>
+
+
+
+<style id="classkit-font-consistency-v37">
+/* V37: font consistency polish only — no function or layout changes */
+:root{
+  --tk-font-ui:"Inter","SF Pro Text","SF Pro Display",-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC","Microsoft YaHei",Arial,sans-serif;
+  --tk-font-display:"Inter","SF Pro Display","SF Pro Text",-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC","Microsoft YaHei",Arial,sans-serif;
+  --tk-font-mono:"SF Mono","Roboto Mono","Consolas",monospace;
+}
+html,body,
+button,input,textarea,select,
+.card,.hero,.minimal-hero,.product-hero-v18,.result,.modebar,.session-strip,
+.main-nav,.tabs,.mobile-bottom-nav,.report,.report-box,.modal,.toast,.badge{
+  font-family:var(--tk-font-ui)!important;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
+}
+h1,h2,h3,
+.brand,.big,.timer,.kpi b,.status-tile b,.mini-stat b,
+.class-card h3,.report-card h2,.template-card h3{
+  font-family:var(--tk-font-display)!important;
+}
+button, .main-nav button, .tabs button, .mobile-bottom-nav button{
+  font-weight:650!important;
+  letter-spacing:-.01em!important;
+}
+button b{font-family:var(--tk-font-ui)!important;font-weight:680!important;letter-spacing:-.012em!important}
+button small{font-family:var(--tk-font-ui)!important;font-weight:520!important;letter-spacing:0!important}
+input,textarea,select,label{
+  font-family:var(--tk-font-ui)!important;
+  font-weight:500;
+}
+textarea,.report,.report-box,#reportText,#teacherNote{
+  line-height:1.68!important;
+  letter-spacing:-.004em!important;
+}
+.brand{font-weight:760!important;letter-spacing:-.03em!important}
+.brand span{font-weight:620!important}
+.eyebrow,.badge,.save-status,.hint,.status,.muted,.empty-state p{
+  letter-spacing:-.003em!important;
+}
+.kpi b,.timer{font-variant-numeric:tabular-nums!important}
+#confirmInput{font-family:var(--tk-font-mono)!important;font-weight:700!important}
+</style>
+
+
+<style id="classkit-final-nav-font-fix">
+/* Final navigation typography consistency fix: keep all nav labels the same size. */
+.main-nav button,
+.main-nav button.on,
+.mobile-bottom-nav button,
+.mobile-bottom-nav button.on{
+  font-family: var(--font-ui, Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Noto Sans SC", Arial, sans-serif) !important;
+  font-size: 13px !important;
+  line-height: 1 !important;
+  font-weight: 650 !important;
+  letter-spacing: -0.01em !important;
+  text-transform: none !important;
+}
+.mobile-bottom-nav button,
+.mobile-bottom-nav button.on{
+  font-size: 11px !important;
+  min-height: 42px !important;
+}
+.tabs button,
+.tabs button.on{
+  font-family: var(--font-ui, Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Noto Sans SC", Arial, sans-serif) !important;
+  font-size: 13px !important;
+  line-height: 1.12 !important;
+  font-weight: 650 !important;
+}
+.tabs button small,
+.tabs button.on small{
+  font-size: 11px !important;
+  font-weight: 520 !important;
+  line-height: 1.1 !important;
+}
+@media(max-width:560px){
+  .main-nav button,.main-nav button.on{font-size:13px !important;}
+  .mobile-bottom-nav button,.mobile-bottom-nav button.on{font-size:10.5px !important;}
+  .tabs button,.tabs button.on{font-size:12px !important;}
+  .tabs button small,.tabs button.on small{font-size:10px !important;}
+}
+</style>
+
+
+<style id="classkit-tools-title-final-fix-v39">
+/* V39: Fix Tools page title typography only.
+   The previous fix targeted navigation labels; this one targets the Tools page heading itself. */
+#tools .simplified-tools-hero h1,
+section#tools .hero.simplified-tools-hero h1{
+  font-family:var(--tk-font-display, Inter, "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Noto Sans SC", "Microsoft YaHei", Arial, sans-serif) !important;
+  font-size:clamp(34px, 4.2vw, 52px) !important;
+  line-height:1.04 !important;
+  font-weight:780 !important;
+  letter-spacing:-.052em !important;
+  margin:6px 0 12px !important;
+}
+#tools .simplified-tools-hero .eyebrow{
+  font-size:12.5px !important;
+  line-height:1.25 !important;
+  font-weight:720 !important;
+  letter-spacing:.01em !important;
+}
+#tools .simplified-tools-hero p.muted{
+  font-size:17px !important;
+  line-height:1.62 !important;
+  font-weight:500 !important;
+  letter-spacing:-.006em !important;
+  color:var(--muted) !important;
+}
+@media(max-width:560px){
+  #tools .simplified-tools-hero h1,
+  section#tools .hero.simplified-tools-hero h1{
+    font-size:32px !important;
+    letter-spacing:-.045em !important;
+  }
+  #tools .simplified-tools-hero p.muted{font-size:15px !important;}
+}
+</style>
+
+
+
+<style id="classkit-global-type-scale-v40">
+/* V40: global typography scale cleanup only — no function or layout changes.
+   Goal: every page uses the same title/body/button/input/report font system. */
+:root{
+  --tk-font-ui:"Inter","SF Pro Text","SF Pro Display",-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC","Microsoft YaHei",Arial,sans-serif;
+  --tk-font-display:"Inter","SF Pro Display","SF Pro Text",-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC","Microsoft YaHei",Arial,sans-serif;
+  --tk-text-xs:11px;
+  --tk-text-sm:12.5px;
+  --tk-text-md:14px;
+  --tk-text-base:15px;
+  --tk-text-lead:17px;
+  --tk-title-card:18px;
+  --tk-title-page:clamp(32px,3.8vw,44px);
+}
+html,body,
+button,input,textarea,select,label,
+.card,.hero,.minimal-hero,.product-hero-v18,.result,.modebar,.session-strip,
+.main-nav,.tabs,.mobile-bottom-nav,.report,.report-box,.modal,.toast,.badge,
+.class-card,.template-card,.report-card,.setting-card,.archive-item,.status-tile{
+  font-family:var(--tk-font-ui)!important;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
+}
+h1,h2,h3,.brand,.big,.timer,.kpi b,.status-tile b,.mini-stat b{
+  font-family:var(--tk-font-display)!important;
+}
+/* One consistent page-title size across Home / Attendance / Dashboard / Tools / Class / Reports / Settings. */
+h1,
+.product-hero-v18 h1,
+.hero h1,
+.minimal-hero h1,
+.dashboard-hero-clean h1,
+.records-hero-clean h1,
+.end-hero h1,
+#tools .simplified-tools-hero h1,
+section#tools .hero.simplified-tools-hero h1{
+  font-size:var(--tk-title-page)!important;
+  line-height:1.08!important;
+  font-weight:760!important;
+  letter-spacing:-.045em!important;
+  margin:6px 0 10px!important;
+}
+/* Section/card headings share one stable scale. */
+h2,.report-card h2,.current-class-panel h2{
+  font-size:var(--tk-title-card)!important;
+  line-height:1.28!important;
+  font-weight:720!important;
+  letter-spacing:-.022em!important;
+  margin:0 0 10px!important;
+}
+h3,.class-card h3,.template-card h3,.empty-state h3{
+  font-size:var(--tk-text-base)!important;
+  line-height:1.32!important;
+  font-weight:680!important;
+  letter-spacing:-.012em!important;
+}
+/* Body text and page descriptions. */
+body,p,.muted,.help,.flow-step,.teacher-note-mini,.release-note{
+  font-size:var(--tk-text-md)!important;
+  line-height:1.62!important;
+  letter-spacing:-.004em!important;
+}
+.lead,
+.hero p.muted,
+.minimal-hero p.muted,
+.product-hero-v18 p.muted,
+#tools .simplified-tools-hero p.muted{
+  font-size:var(--tk-text-lead)!important;
+  line-height:1.58!important;
+  font-weight:500!important;
+  letter-spacing:-.006em!important;
+}
+.eyebrow,
+#tools .simplified-tools-hero .eyebrow{
+  font-size:var(--tk-text-sm)!important;
+  line-height:1.25!important;
+  font-weight:720!important;
+  letter-spacing:.01em!important;
+}
+.badge,.hint,.status,.save-status,.session-strip,.global-context-bar,.report-context-strip p,
+.status-tile span,.readiness-item p,.insight-item p,.kpi p,.empty-state p,.danger-note,.confirm-helper{
+  font-size:var(--tk-text-sm)!important;
+  line-height:1.42!important;
+  font-weight:500!important;
+}
+/* Buttons: one consistent hierarchy everywhere. */
+button,.main-nav button,.tabs button,.mobile-bottom-nav button,
+.actions button,.hero-actions-clean button,.report-actions button,.compact-actions button,.mini-actions button{
+  font-family:var(--tk-font-ui)!important;
+  font-size:var(--tk-text-md)!important;
+  line-height:1.12!important;
+  font-weight:650!important;
+  letter-spacing:-.01em!important;
+  text-transform:none!important;
+}
+button b,
+.actions button b,.hero-actions-clean button b,.report-actions button b,.compact-actions button b,.mini-actions button b{
+  font-size:var(--tk-text-md)!important;
+  line-height:1.12!important;
+  font-weight:680!important;
+  letter-spacing:-.012em!important;
+}
+button small,
+.actions button small,.hero-actions-clean button small,.report-actions button small,.compact-actions button small,.mini-actions button small{
+  font-size:var(--tk-text-xs)!important;
+  line-height:1.12!important;
+  font-weight:520!important;
+  letter-spacing:0!important;
+}
+/* Navigation stays compact but consistent. */
+.main-nav button,.main-nav button.on{font-size:13px!important;line-height:1!important;font-weight:650!important;}
+.mobile-bottom-nav button,.mobile-bottom-nav button.on{font-size:11px!important;line-height:1.05!important;font-weight:650!important;}
+.tabs button,.tabs button.on{font-size:13px!important;line-height:1.12!important;font-weight:650!important;}
+.tabs button small,.tabs button.on small{font-size:11px!important;}
+/* Forms and reports. */
+label{font-size:var(--tk-text-md)!important;line-height:1.35!important;font-weight:670!important;}
+input,textarea,select{
+  font-size:var(--tk-text-md)!important;
+  line-height:1.45!important;
+  font-weight:500!important;
+}
+.report,.report-box,#reportText,#teacherNote{
+  font-size:var(--tk-text-md)!important;
+  line-height:1.68!important;
+  font-weight:500!important;
+  letter-spacing:-.004em!important;
+}
+/* Numbers and classroom result display keep a display scale but remain unified. */
+.kpi b{font-size:26px!important;line-height:1.05!important;font-weight:740!important;}
+.status-tile b{font-size:23px!important;line-height:1.08!important;font-weight:740!important;}
+.big{font-size:clamp(48px,8vw,88px)!important;line-height:1!important;font-weight:780!important;}
+.mid{font-size:22px!important;line-height:1.2!important;font-weight:620!important;}
+.timer{font-size:clamp(60px,12vw,120px)!important;line-height:1!important;font-weight:780!important;}
+.brand{font-size:16px!important;line-height:1.1!important;font-weight:760!important;letter-spacing:-.03em!important;}
+.brand span{font-weight:620!important;}
+@media(max-width:560px){
+  :root{--tk-title-page:32px;--tk-text-lead:15px;--tk-title-card:17px;}
+  h1,.product-hero-v18 h1,.hero h1,.minimal-hero h1,#tools .simplified-tools-hero h1{letter-spacing:-.04em!important;}
+  .main-nav button,.main-nav button.on{font-size:13px!important;}
+  .mobile-bottom-nav button,.mobile-bottom-nav button.on{font-size:10.5px!important;}
+  .tabs button,.tabs button.on{font-size:12px!important;}
+  .tabs button small,.tabs button.on small{font-size:10px!important;}
+  button b{font-size:13.5px!important;}
+  button small{font-size:10.5px!important;}
+}
+</style>
+
+
+<style id="draw-gift-background-style">
+/* Colorful gift background for Draw page only — all classroom functions remain unchanged. */
+#drawView{position:relative;overflow:hidden;isolation:isolate}
+#drawView .draw-gift-bg{
+  position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+  background:
+    radial-gradient(circle at 10% 18%, rgba(255,219,106,.09), transparent 12%),
+    radial-gradient(circle at 88% 22%, rgba(255,161,191,.09), transparent 14%),
+    radial-gradient(circle at 18% 84%, rgba(143,208,255,.09), transparent 14%),
+    radial-gradient(circle at 82% 80%, rgba(170,225,178,.09), transparent 16%)
+}
+#drawView .draw-gift-content{position:relative;z-index:1;display:grid;place-items:center;width:100%;min-height:inherit}
+
+/* Cartoon gift icons: same 🎁 shape feeling, but each gift has a different bright color palette. */
+#drawView .gift-emoji{
+  position:absolute;z-index:0;pointer-events:none;user-select:none;overflow:visible;
+  width:54px;height:48px;border-radius:13px 13px 12px 12px;opacity:.34;
+  color:transparent;text-indent:-9999px;
+  background:
+    linear-gradient(90deg, transparent 0 43%, var(--gift-ribbon) 43% 57%, transparent 57% 100%),
+    linear-gradient(180deg, var(--gift-lid) 0 24%, var(--gift-box) 24% 100%);
+  box-shadow:inset 0 -7px 0 rgba(0,0,0,.06),0 12px 22px rgba(16,24,40,.08);
+  animation:giftEmojiFloat var(--gift-dur,12s) ease-in-out infinite;
+}
+#drawView .gift-emoji::before{
+  content:"";position:absolute;left:-4px;right:-4px;top:10px;height:9px;border-radius:999px;
+  background:var(--gift-ribbon);box-shadow:0 4px 10px rgba(16,24,40,.06)
+}
+#drawView .gift-emoji::after{
+  content:"";position:absolute;left:50%;top:-16px;width:18px;height:18px;border:5px solid var(--gift-ribbon);
+  border-radius:70% 40% 70% 40%;transform:translateX(-50%) rotate(45deg);
+  box-shadow:-14px 14px 0 -5px var(--gift-ribbon),14px -14px 0 -5px var(--gift-ribbon)
+}
+#drawView .gift-emoji.g1{left:2%;top:8%;--gift-dur:12.5s;animation-delay:-1.2s;--gift-box:#ff6b8a;--gift-lid:#ff9fb2;--gift-ribbon:#ffd166}
+#drawView .gift-emoji.g2{left:6%;bottom:10%;--gift-dur:15.8s;animation-delay:-5.8s;--gift-box:#4dabf7;--gift-lid:#8bd3ff;--gift-ribbon:#fff3b0}
+#drawView .gift-emoji.g3{left:15%;top:72%;--gift-dur:13.4s;animation-delay:-3.1s;--gift-box:#7c5cff;--gift-lid:#b9a7ff;--gift-ribbon:#ffdf6e}
+#drawView .gift-emoji.g4{left:24%;top:6%;--gift-dur:14.9s;animation-delay:-7.2s;--gift-box:#2ec4b6;--gift-lid:#85eadf;--gift-ribbon:#ff9f1c}
+#drawView .gift-emoji.g5{left:34%;bottom:12%;--gift-dur:14.2s;animation-delay:-2.5s;--gift-box:#ff9f1c;--gift-lid:#ffc46b;--gift-ribbon:#5eead4}
+#drawView .gift-emoji.g6{right:2%;top:10%;--gift-dur:14.5s;animation-delay:-4.3s;--gift-box:#22c55e;--gift-lid:#86efac;--gift-ribbon:#f472b6}
+#drawView .gift-emoji.g7{right:8%;bottom:8%;--gift-dur:11.9s;animation-delay:-2.1s;--gift-box:#f43f5e;--gift-lid:#fda4af;--gift-ribbon:#60a5fa}
+#drawView .gift-emoji.g8{right:16%;top:74%;--gift-dur:16.8s;animation-delay:-8s;--gift-box:#06b6d4;--gift-lid:#67e8f9;--gift-ribbon:#fde047}
+#drawView .gift-emoji.g9{right:25%;top:5%;--gift-dur:12.8s;animation-delay:-5s;--gift-box:#a855f7;--gift-lid:#d8b4fe;--gift-ribbon:#34d399}
+#drawView .gift-emoji.g10{right:33%;bottom:12%;--gift-dur:13.8s;animation-delay:-1.9s;--gift-box:#fb7185;--gift-lid:#fecdd3;--gift-ribbon:#38bdf8}
+#drawView .gift-emoji.g11{left:42%;top:10%;--gift-dur:15.1s;animation-delay:-6.5s;--gift-box:#f97316;--gift-lid:#fed7aa;--gift-ribbon:#c084fc}
+#drawView .gift-emoji.g12{right:42%;bottom:8%;--gift-dur:14.6s;animation-delay:-4.6s;--gift-box:#14b8a6;--gift-lid:#99f6e4;--gift-ribbon:#fbbf24}
+
+#drawView .sparkle{position:absolute;width:16px;height:16px;z-index:0;opacity:.24;pointer-events:none;animation:sparkleTwinkle var(--spark-dur,6s) ease-in-out infinite}
+#drawView .sparkle::before,#drawView .sparkle::after{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(255,212,92,.95);border-radius:999px}
+#drawView .sparkle::before{width:4px;height:16px}
+#drawView .sparkle::after{width:16px;height:4px}
+#drawView .s1{left:10%;top:28%;--spark-dur:4.8s;animation-delay:-1.2s}
+#drawView .s2{left:20%;top:88%;--spark-dur:5.6s;animation-delay:-3.5s}
+#drawView .s3{left:39%;top:16%;--spark-dur:6.1s;animation-delay:-2.2s}
+#drawView .s4{left:46%;top:84%;--spark-dur:5.2s;animation-delay:-1.1s}
+#drawView .s5{right:12%;top:34%;--spark-dur:5.4s;animation-delay:-1.7s}
+#drawView .s6{right:24%;top:86%;--spark-dur:4.9s;animation-delay:-4.1s}
+#drawView .s7{right:41%;top:18%;--spark-dur:6.4s;animation-delay:-2.9s}
+#drawView .s8{right:47%;top:82%;--spark-dur:5.8s;animation-delay:-3.2s}
+@keyframes giftEmojiFloat{0%{transform:translate3d(0,0,0) rotate(-6deg) scale(1)}25%{transform:translate3d(10px,-18px,0) rotate(5deg) scale(1.05)}50%{transform:translate3d(-8px,-30px,0) rotate(-4deg) scale(.98)}75%{transform:translate3d(8px,-14px,0) rotate(4deg) scale(1.03)}100%{transform:translate3d(0,0,0) rotate(-6deg) scale(1)}}
+@keyframes sparkleTwinkle{0%,100%{transform:scale(.7);opacity:.10}50%{transform:scale(1.22);opacity:.32}}
+@media (max-width: 900px){
+  #drawView .gift-emoji{width:44px;height:40px;opacity:.28}
+  #drawView .gift-emoji.g4,#drawView .gift-emoji.g5,#drawView .gift-emoji.g9,#drawView .gift-emoji.g10,#drawView .gift-emoji.g11,#drawView .gift-emoji.g12{display:none}
+}
+@media (max-width: 640px){
+  #drawView .gift-emoji{width:34px;height:31px;opacity:.22;border-radius:9px}
+  #drawView .gift-emoji.g3,#drawView .gift-emoji.g8{display:none}
+  #drawView .sparkle{opacity:.16}
+}
+@media print{#drawView .draw-gift-bg{display:none}}
+@media (prefers-reduced-motion: reduce){#drawView .gift-emoji,#drawView .sparkle{animation:none}}
+</style>
+
+
+<style id="classkit-cloud-auth-style">
+/* Cloud account login layer: product style kept consistent with ClassKit. */
+.cloud-auth-overlay{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:linear-gradient(180deg,rgba(247,248,250,.96),rgba(247,248,250,.92));backdrop-filter:saturate(140%) blur(18px);padding:18px}
+.cloud-auth-overlay.hidden{display:none!important}.cloud-auth-card{width:min(100%,430px);background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:0 18px 55px rgba(16,24,40,.10)}.cloud-auth-card h1{font-size:34px;margin:4px 0 8px}.cloud-auth-card p{margin:0 0 14px}.cloud-auth-card .auth-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.cloud-auth-card .auth-note{font-size:12px;color:var(--muted-2);text-align:center;margin-top:14px;line-height:1.45}.cloud-auth-message{min-height:20px;margin-top:10px;font-size:13px;color:var(--danger)}.cloud-user-chip{display:none;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:5px 7px 5px 10px;background:var(--surface);font-size:12px;color:var(--muted);white-space:nowrap}.cloud-user-chip.show{display:flex}.cloud-user-chip b{color:var(--ink);font-weight:720}.cloud-user-chip button{min-height:26px!important;padding:3px 8px!important;border-radius:999px;font-size:11px!important}.cloud-config-warning{border:1px solid #f0d0cd;background:#fff7f6;color:#8a2d25;border-radius:14px;padding:10px 12px;font-size:13px;margin-bottom:12px;display:none}.cloud-config-warning.show{display:block}@media(max-width:720px){.cloud-user-chip{order:4;width:100%;justify-content:space-between}.cloud-auth-card .auth-actions{grid-template-columns:1fr}.cloud-auth-card{padding:20px}}
+</style>
+
+</head>
+<body data-screen="home">
+
+<div id="cloudAuthOverlay" class="cloud-auth-overlay">
+  <div class="cloud-auth-card">
+    <div class="brand" style="font-size:18px;margin-bottom:10px">Class<span>Kit</span> Cloud</div>
+    <h1>Teacher Login</h1>
+    <p class="muted">登录后，班级、学生名单、出勤、积分、报告和设置会保存到云端。换电脑打开同一个 Vercel 网站，再登录同一账号即可恢复。</p>
+    <div id="cloudConfigWarning" class="cloud-config-warning">请先在代码中填写你的 Supabase URL 和 anon public key，并在 Supabase 后台执行 SQL 建表。</div>
+    <label>Username｜用户名</label>
+    <input id="cloudUsername" autocomplete="username" placeholder="例如：linrui">
+    <label>Password｜密码</label>
+    <input id="cloudPassword" type="password" autocomplete="current-password" placeholder="请输入密码">
+    <div class="auth-actions">
+      <button class="primary" id="cloudLoginBtn" type="button"><b>Login</b><small>登录</small></button>
+      <button class="ghost" id="cloudSignupBtn" type="button"><b>Create Account</b><small>创建账号</small></button>
+    </div>
+    <div id="cloudAuthMessage" class="cloud-auth-message"></div>
+    <div class="auth-note">Cloud save by Supabase｜数据保存到云端账号<br>请妥善保存用户名和密码</div>
+  </div>
+</div>
+<!-- ClassKit release candidate: existing features preserved; final polish for layout, reports, mobile, and release readiness. -->
+<header class="top">
+  <div class="topin">
+    <div class="brand">Class<span>Kit</span></div><div class="save-status" id="saveStatus">Attendance, interaction & reports｜出勤、互动与报告</div><div id="cloudUserChip" class="cloud-user-chip"><span>Teacher: <b id="cloudUserName">—</b></span><button type="button" onclick="cloudLogout()">Logout</button></div>
+    <nav class="main-nav">
+      <button class="on" data-nav="home" onclick="goName('home')">Home</button>
+      <button data-nav="dashboard" onclick="goName('dashboard')">Class</button>
+      <button data-nav="tools" onclick="goName('tools')">Tools</button>
+      <button data-nav="records" onclick="goName('records')">Reports</button>
+      <button data-nav="settings" onclick="goName('settings')">Settings</button>
+    </nav>
+  </div>
+</header>
+
+<main class="app">
+
+
+<section id="home" class="screen on home-minimal product-shell">
+  <div class="product-hero-v18 simplified-hero">
+    <div class="hero-copy-v18">
+      <p class="eyebrow">Attendance, interaction & reports｜出勤、互动与报告</p>
+      <h1>ClassKit</h1>
+      <p class="lead">A focused classroom tool for attendance, interaction, and reports.</p>
+      <p class="muted">一个专为教师设计的课堂出勤、互动与报告工具，适用于不同学段与多种课堂场景。</p>
+      <div class="hero-actions-clean">
+        <button class="primary" onclick="startTodayClass()"><b>Start</b><small>开始今天的课堂</small></button>
+        <button class="ghost" onclick="demoClass();goName('dashboard')"><b>Try Demo</b><small>体验示范班级</small></button>
+      </div>
+    </div>
+    <div class="hero-panel-v18 simple-steps">
+      <div class="mini-stat"><span>1</span><b>Attendance</b><small>确认出勤</small></div>
+      <div class="mini-stat"><span>2</span><b>Activities</b><small>课堂互动</small></div>
+      <div class="mini-stat"><span>3</span><b>Report</b><small>生成报告</small></div>
+    </div>
+  </div>
+</section>
+
+<section id="startflow" class="screen">
+  <div class="hero">
+    <p class="muted">Start Class｜开始课堂</p>
+    <h1>Check Attendance First</h1>
+    <p>建议先确认今天谁在场，再进入课堂工具。缺勤学生不会进入点名、抽奖和分组。</p>
+    <div class="actions">
+      <button class="primary" onclick="goName('attendance')"><b>Check Attendance</b><small>确认出勤</small></button>
+      <button class="ghost" onclick="goName('dashboard')"><b>Later</b><small>稍后确认</small></button>
+    </div>
+  </div>
+</section>
+
+<section id="attendance" class="screen">
+  <div class="hero">
+    <p class="muted">Today Attendance｜今日出勤</p>
+    <h1>Who is here today?</h1>
+    <p>默认所有学生为 Present。只需要把当天缺勤学生改为 Absent；他们不会参与课堂活动统计。</p>
+    <div class="global-context-bar" id="attendanceContextBar"></div>
+    <div class="actions">
+      <button class="ghost" onclick="markAllActive()"><b>All Present</b><small>全部在场</small></button>
+      <button class="ghost" onclick="clearAbsence()"><b>Clear Absence</b><small>清除缺勤</small></button>
+      <button class="primary" onclick="confirmAttendanceStart()"><b>Confirm & Start</b><small>确认出勤并开始课堂</small></button>
+    </div>
+    <div class="attendance-summary" id="attendanceSummary"></div>
+  </div>
+  <div class="card">
+    <h2>Students｜学生状态</h2>
+    <div class="status-grid" id="attendanceListMain" style="margin-top:12px"></div>
+  </div>
+</section>
+
+<section id="dashboard" class="screen">
+  <div class="minimal-hero dashboard-hero-clean simplified-dashboard-hero">
+    <p class="eyebrow">Teacher Control Center｜教师控制台</p>
+    <h1 id="dashClass">Demo Class</h1>
+    <p id="dashInfo" class="lead small-lead">Students: 0｜Teams: 0｜Activities: 0</p>
+    <div class="global-context-bar" id="dashboardContextBar"></div>
+    <div class="hero-actions-clean">
+      <button class="primary" onclick="startTodayClass()"><b>Start Class</b><small>开始今天的课堂</small></button>
+      <button class="ghost" onclick="goName('tools')"><b>Tools</b><small>课堂工具</small></button>
+      <button class="ghost" onclick="goName('records')"><b>Reports</b><small>课堂报告</small></button>
+    </div>
+  </div>
+
+  <div class="class-home simplified-dashboard-grid">
+    <div class="card compact-card dashboard-main-card">
+      <h2>Today’s Class｜今日课堂</h2>
+      <select id="dashClassSelect" onchange="loadClass(this.value)"></select>
+      <div class="status-center" id="dashboardStatusCenter"></div>
+      <div class="teacher-note-mini" id="dashboardSuggestion">Next Class Suggestion｜下节课建议：课堂开始后会自动生成。</div>
+    </div>
+    <div class="card compact-card">
+      <h2>Before Class｜课前检查</h2>
+      <div class="readiness-list" id="classReadiness"></div>
+    </div>
+    <div class="card compact-card">
+      <h2>Teacher Insights｜教师提醒</h2>
+      <div class="insight-list" id="teacherInsights"></div>
+    </div>
+  </div>
+
+  <details class="card compact-card advanced-panel">
+    <summary>Activity Templates｜活动模板</summary>
+    <p class="muted">需要时再选择模板，避免控制台过于拥挤。</p>
+    <div class="template-grid clean-template-grid">
+      <div class="template-card" onclick="applyActivityTemplate('warmup')"><h3>Warm-up</h3><p class="muted">快速热身</p></div>
+      <div class="template-card" onclick="applyActivityTemplate('vocab')"><h3>Vocabulary</h3><p class="muted">词汇复习</p></div>
+      <div class="template-card" onclick="applyActivityTemplate('reading')"><h3>Practice</h3><p class="muted">句子练习</p></div>
+      <div class="template-card" onclick="applyActivityTemplate('competition')"><h3>Competition</h3><p class="muted">小组竞赛</p></div>
+      <div class="template-card" onclick="applyActivityTemplate('reward')"><h3>Reward</h3><p class="muted">下课奖励</p></div>
+    </div>
+  </details>
+</section>
+
+<section id="tools" class="screen">
+  <div class="hero simplified-tools-hero">
+    <div>
+      <p class="eyebrow">Class Mode｜上课模式</p>
+      <h1>Tools</h1>
+      <p class="muted">课堂中只保留核心操作，减少投屏和操作干扰。</p>
+      <div class="tool-current-class" id="toolsCurrentClass"></div>
+    </div>
+    <div class="actions compact-actions">
+      <button class="primary" onclick="runTool()"><b>Start</b><small>开始</small></button>
+      <button class="ghost" onclick="undoLastAction()"><b>Undo</b><small>撤销</small></button>
+      <button class="ghost" onclick="nextFlow()"><b>Next</b><small>下一步</small></button>
+      <button class="gold" onclick="openEndClass()"><b>End</b><small>结束</small></button>
+    </div>
+  </div>
+
+  <div class="session-strip" id="sessionStatus"></div>
+
+  <div class="modebar">
+    <div>
+      <span class="badge" id="currentClassBadge">Class｜班级：No Class</span>
+      <span class="badge" id="templateBadge">Template｜模板：Default</span>
+    </div>
+    <div class="switch">
+      <button id="classModeBtn" class="on" onclick="setMode(false)">Class Mode 上课模式</button>
+      <button id="editModeBtn" onclick="setMode(true)">Edit Mode 编辑模式</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="on" onclick="setTool('draw',this)">Draw<br><small>抽奖</small></button>
+    <button onclick="setTool('picker',this)">Picker<br><small>点名</small></button>
+    <button onclick="setTool('group',this)">Groups<br><small>分组</small></button>
+    <button onclick="setTool('points',this)">Points<br><small>积分</small></button>
+    <button onclick="setTool('timer',this)">Timer<br><small>倒计时</small></button>
+  </div>
+
+  <div class="layout">
+    <aside class="card editor">
+      <h2>Edit Mode｜编辑模式</h2>
+      <p class="muted">编辑区默认收纳；上课前调整学生、奖励、小组和规则。</p>
+
+      <details class="setting-card" open>
+        <summary>Students｜学生</summary>
+        <div class="setting-body">
+          <label>Students｜学生名单</label>
+          <textarea id="names"></textarea>
+        </div>
+      </details>
+
+      <details class="setting-card">
+        <summary>Rewards｜奖品</summary>
+        <div class="setting-body">
+          <p class="muted">可以用奖品卡片设置概率；高级老师也可以继续直接编辑文本。</p>
+          <div class="reward-cards">
+            <div class="reward-card">
+              <b>Reward 1｜奖品一</b>
+              <input id="rewardName1" placeholder="Sticker 贴纸" oninput="syncRewardCards()">
+              <select id="rewardChance1" onchange="syncRewardCards()"><option value="8">High 高概率</option><option value="4">Medium 中概率</option><option value="1">Low 低概率</option></select>
+            </div>
+            <div class="reward-card">
+              <b>Reward 2｜奖品二</b>
+              <input id="rewardName2" placeholder="+1 Point 加1分" oninput="syncRewardCards()">
+              <select id="rewardChance2" onchange="syncRewardCards()"><option value="8">High 高概率</option><option value="4" selected>Medium 中概率</option><option value="1">Low 低概率</option></select>
+            </div>
+            <div class="reward-card">
+              <b>Reward 3｜奖品三</b>
+              <input id="rewardName3" placeholder="Special Reward 特别奖励" oninput="syncRewardCards()">
+              <select id="rewardChance3" onchange="syncRewardCards()"><option value="8">High 高概率</option><option value="4">Medium 中概率</option><option value="1" selected>Low 低概率</option></select>
+            </div>
+          </div>
+
+          <div class="reward-builder">
+            <button onclick="setSimpleRewards('common')">常见奖励<br><small>High Chance</small></button>
+            <button onclick="setSimpleRewards('encourage')">鼓励奖<br><small>Medium Chance</small></button>
+            <button onclick="setSimpleRewards('special')">特别奖励<br><small>Low Chance</small></button>
+          </div>
+          <label>Rewards｜奖品设置</label>
+          <textarea id="rewards"></textarea>
+          <label>Draw Mode｜抽奖规则</label>
+          <select id="drawMode">
+            <option value="norepeat">No repeat 不重复</option>
+            <option value="fair">Fair priority 公平优先</option>
+            <option value="repeat">Allow repeat 可重复</option>
+          </select>
+          <label>Draw Pool｜抽奖范围</label>
+          <select id="drawPoolMode" onchange="saveData(); updateDrawPoolHint();">
+            <option value="engaged">Precise Draw｜精准抽奖：仅已出勤且勾选课堂参与</option>
+            <option value="present">Present Students｜全班出勤抽奖：全部已出勤学生</option>
+          </select>
+        </div>
+      </details>
+
+      <details class="setting-card">
+        <summary>Teams｜小组</summary>
+        <div class="setting-body">
+          <label>Group Count｜小组数量</label>
+          <input id="groupCount" type="number" value="3" min="2" max="10">
+          <label>Teams｜队伍名称</label>
+          <textarea id="teams"></textarea>
+        </div>
+      </details>
+
+      <details class="setting-card">
+        <summary>Rules｜积分规则</summary>
+        <div class="setting-body">
+          <label>Point Step｜每次加减分</label>
+          <input id="pointStep" type="number" value="1" min="1">
+          <label>Reason｜加分理由</label>
+          <select id="reason">
+            <option>Good Answer 回答正确</option>
+            <option>Good Pronunciation 发音好</option>
+            <option>Teamwork 合作好</option>
+            <option>Fast Response 反应快</option>
+            <option>Good Behavior 课堂表现好</option>
+          </select>
+        </div>
+      </details>
+
+      <details class="setting-card">
+        <summary>Timer｜倒计时</summary>
+        <div class="setting-body">
+          <label>Timer Minutes｜倒计时分钟</label>
+          <input id="timerMin" type="number" value="3" min="1">
+        </div>
+      </details>
+
+      <div class="actions" style="margin-top:14px">
+        <button class="primary" onclick="saveCurrentClass()"><b>Save</b><small>保存设置</small></button>
+      </div>
+    </aside>
+
+    <section class="card stage class-stage-clean">
+      <div id="drawView" class="result">
+        <div class="draw-gift-bg" aria-hidden="true">
+          <span class="gift-emoji g1"></span>
+          <span class="gift-emoji g2"></span>
+          <span class="gift-emoji g3"></span>
+          <span class="gift-emoji g4"></span>
+          <span class="gift-emoji g5"></span>
+          <span class="gift-emoji g6"></span>
+          <span class="gift-emoji g7"></span>
+          <span class="gift-emoji g8"></span>
+          <span class="gift-emoji g9"></span>
+          <span class="gift-emoji g10"></span>
+          <span class="gift-emoji g11"></span>
+          <span class="gift-emoji g12"></span>
+          <div class="sparkle s1"></div>
+          <div class="sparkle s2"></div>
+          <div class="sparkle s3"></div>
+          <div class="sparkle s4"></div>
+          <div class="sparkle s5"></div>
+          <div class="sparkle s6"></div>
+          <div class="sparkle s7"></div>
+          <div class="sparkle s8"></div>
+        </div>
+        <div class="draw-gift-content">
+          <div>
+            <div class="status" id="drawStatus">Ready to draw｜准备抽奖</div>
+            <div class="big" id="winner">Ready?</div>
+            <div class="mid" id="prize">Click Start 点击开始</div>
+            <div class="hint" id="drawPoolHint">精准抽奖：仅从已出勤且勾选课堂参与的学生中抽取。<br>Precise draw: Present + participation checked only.</div>
+            <div class="hint">支持不重复抽奖、公平优先和奖品权重。<br>No repeat, fair priority and weighted rewards.</div>
+            <div class="actions" style="justify-content:center;margin-top:16px">
+              <button class="primary" onclick="drawReward()"><b>Start Draw</b><small>开始抽奖</small></button>
+            </div>
+            <div class="undo-bar"><button class="ghost" onclick="undoLastReward()">撤销上次抽奖｜Undo Reward</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="pickerView" class="result" style="display:none">
+        <div>
+          <div class="big" id="picked">Ready?</div>
+          <div class="mid">Name Picker｜随机点名</div>
+          <div class="hint">公平机制会优先选择参与次数较少的学生。<br>Fair mode prioritizes less-picked students.</div>
+          <div class="actions" style="justify-content:center;margin-top:16px">
+            <button class="primary" onclick="pickName()"><b>Pick</b><small>随机点名</small></button>
+          </div>
+          <div class="undo-bar"><button class="ghost" onclick="undoLastPick()">撤销上次点名｜Undo Pick</button></div>
+        </div>
+      </div>
+
+      <div id="groupView" style="display:none">
+        <div class="teams" id="groupsOut"></div>
+      </div>
+
+      <div id="pointsView" style="display:none">
+        <div id="leader" class="winner-team"></div>
+        <div class="row" style="margin-bottom:12px">
+          <button class="ghost" onclick="undoPoint()"><b>Undo</b><small>撤销上一步</small></button>
+        </div>
+        <div class="teams" id="scoresOut"></div>
+      </div>
+
+      <div id="timerView" class="result" style="display:none">
+        <div>
+          <div class="timer" id="timerText">03:00</div>
+          <div class="actions" style="justify-content:center">
+            <button class="primary" onclick="startTimer()"><b>Start</b><small>开始</small></button>
+            <button class="ghost" onclick="pauseTimer()"><b>Pause</b><small>暂停</small></button>
+            <button class="ghost" onclick="resetTimer()"><b>Reset</b><small>重置</small></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="history" id="history"></div>
+    </section>
+  </div>
+</section>
+
+<section id="class" class="screen">
+  <div class="hero">
+    <h1>Manage Class｜管理班级</h1>
+    <p>支持一个老师管理多个班级。每个班级会独立保存学生名单、出勤、课堂记录、积分和报告。</p>
+  </div>
+
+  <div class="card">
+    <div class="actions">
+      <button class="safe" onclick="demoClass()"><b>Demo Class</b><small>示范班级</small></button>
+      <button class="ghost" onclick="templateClass(10,2)"><b>Small Class</b><small>小班模板</small></button>
+      <button class="ghost" onclick="templateClass(24,4)"><b>Medium Class</b><small>中班模板</small></button>
+      <button class="ghost" onclick="templateClass(36,6)"><b>Large Class</b><small>大班模板</small></button>
+      <button class="danger" onclick="clearDemo()"><b>Clear Demo Data</b><small>清空示范数据</small></button>
+    </div>
+
+    <div class="steps">
+      <div class="step"><b>1</b><h3>班级信息</h3><small>Class Info</small></div>
+      <div class="step"><b>2</b><h3>学生名单</h3><small>Students</small></div>
+      <div class="step"><b>3</b><h3>奖励设置</h3><small>Rewards</small></div>
+      <div class="step"><b>4</b><h3>小组设置</h3><small>Teams</small></div>
+    </div>
+
+
+    <div class="current-class-panel" id="currentClassPanel">
+      <div>
+        <h2>Current Class｜当前班级</h2>
+        <p class="muted">选择一个班级后，出勤、点名、分组、积分和报告都会只记录到这个班级。</p>
+        <div class="class-meta-row" id="currentClassMeta"></div>
+      </div>
+      <div class="actions">
+        <button class="primary" onclick="startTodayClass()"><b>Start Class</b><small>开始上课</small></button>
+        <button class="ghost" onclick="openAddClassEntry()"><b>Add Class</b><small>添加班级</small></button>
+      </div>
+    </div>
+
+    <div class="class-page-heading">
+      <div>
+        <h2>My Classes｜我的班级</h2>
+        <p class="muted">打开某个班级后，出勤、活动、积分和报告都会独立保存，不会和其他班混在一起。</p>
+      </div>
+      <div class="actions"><button class="ghost" onclick="openAddClassEntry()"><b>Add Class</b><small>添加班级</small></button></div>
+    </div>
+    <div class="class-cards multi-class-layout" id="classCards"></div>
+
+    <div class="card" style="margin-top:16px">
+      <h2>Today Attendance｜今日出勤</h2>
+      <p class="muted">设置学生今天是否在场。点名、抽奖、分组会自动排除 Absent 缺席 和 Excluded 本轮不参与 的学生。</p>
+      <div class="actions">
+        <button class="safe" onclick="markAllActive()"><b>All Present</b><small>全部在场</small></button>
+        <button class="ghost" onclick="renderAttendance()"><b>Refresh</b><small>刷新名单</small></button>
+      </div>
+      <div class="status-grid" id="attendanceList" style="margin-top:12px"></div>
+    </div>
+
+    <div class="class-editor-panel" id="addClassPanel">
+      <p class="eyebrow">Create a new class｜添加一个新的班级</p>
+      <h2>Add / Edit Class｜添加 / 编辑班级</h2>
+      <p class="muted">只需要先填写班级名称和学生名单即可保存。建议一个班级保存一份固定名单；每天上课前只调整出勤状态，不需要反复改名单。保存后，这个班级会独立保存出勤、活动、积分和报告。</p>
+      <span class="required-pill">Required 必填：Class Name</span>
+      <span class="required-pill">Required 必填：Student Names</span>
+    </div>
+
+    <div class="grid two">
+      <div><label>Select Class｜选择班级</label><select id="classSelect" onchange="loadClass(this.value)"></select></div>
+      <div><label>Class Name｜班级名称</label><input id="className" placeholder="Class 6A"></div>
+    </div>
+
+    <div class="grid three">
+      <div><label>Students｜学生名单</label><textarea id="classRoster" placeholder="每行一个学生名字"></textarea></div>
+      <div>
+        <label>Rewards｜奖励设置</label>
+        <div class="mini-actions">
+          <button onclick="rewardTemplate('stickers')">贴纸</button>
+          <button onclick="rewardTemplate('points')">积分</button>
+          <button onclick="rewardTemplate('cards')">幸运卡</button>
+        </div>
+        <textarea id="classRewards" placeholder="Sticker 贴纸*6"></textarea>
+      </div>
+      <div><label>Teams｜小组设置</label><textarea id="classTeams" placeholder="Red Team"></textarea></div>
+    </div>
+
+    <div class="actions" style="margin-top:16px">
+      <button class="primary" onclick="saveClass();applyClassToTools();goName('dashboard')"><b>Save & Open</b><small>保存并进入班级首页</small></button>
+      <button class="ghost" onclick="newClassForm()"><b>New Class</b><small>新建班级</small></button>
+      <button class="ghost" onclick="duplicateClass()"><b>Duplicate</b><small>复制班级</small></button>
+      <button class="danger" onclick="confirmDo('deleteClass')"><b>Delete Class</b><small>删除当前班级</small></button>
+    </div>
+  </div>
+</section>
+
+
+<section id="leaderboard" class="screen">
+  <div class="hero">
+    <p class="muted">Leaderboard｜课堂排行榜</p>
+    <h1>Team Ranking</h1>
+    <p>用排行榜展示小组积分，让课堂激励更清晰。</p>
+  </div>
+  <div class="card">
+    <h2>Ranking｜排名</h2>
+    <div id="leaderboardList" class="leaderboard"></div>
+  </div>
+</section>
+
+<section id="records" class="screen">
+  <div class="minimal-hero records-hero-clean">
+    <p class="eyebrow">Report Center｜课堂报告中心</p>
+    <h1>Report Center</h1>
+    <p class="lead small-lead">Three focused report formats for parents, teacher reflection, and school records.｜三种核心报告：家长沟通、教师复盘、学校汇报。</p>
+  </div>
+
+  <div class="grid four record-kpis">
+    <div class="card kpi"><b id="sPicked">0</b><p>Picked 点名</p></div>
+    <div class="card kpi"><b id="sRewards">0</b><p>Rewards 奖励</p></div>
+    <div class="card kpi"><b id="sPoints">0</b><p>Points 积分</p></div>
+    <div class="card kpi"><b id="sActivities">0</b><p>Tools 工具</p></div>
+  </div>
+
+  <div class="card report-context-strip" id="reportContextStrip">
+    <p><b>Current report context｜当前报告信息</b><br><span class="muted">Reports are generated from the selected class only.｜报告只根据当前班级生成。</span></p>
+    <div class="context-left"><span class="badge">No class selected｜未选择班级</span></div>
+  </div>
+
+  <div class="report-card-grid">
+    <div class="card report-card" onclick="setReportType('parent')">
+      <span class="badge">Parent</span><h2>Parent Report｜家长版</h2><p class="muted">Warm, concise, and ready to share with parents.</p>
+      <div class="report-actions"><button class="primary" onclick="event.stopPropagation();copyReportType('parent')"><b>Copy</b><small>复制</small></button><button class="ghost" onclick="event.stopPropagation();printReportType('parent')"><b>Print</b><small>打印</small></button><button class="ghost" onclick="event.stopPropagation();archiveLesson()"><b>Archive</b><small>归档</small></button></div>
+    </div>
+    <div class="card report-card" onclick="setReportType('teacher')">
+      <span class="badge">Teacher</span><h2>Teacher Notes｜教师复盘版</h2><p class="muted">Detailed notes for attendance, participation coverage, and next-class planning.</p>
+      <div class="report-actions"><button class="primary" onclick="event.stopPropagation();copyReportType('teacher')"><b>Copy</b><small>复制</small></button><button class="ghost" onclick="event.stopPropagation();printReportType('teacher')"><b>Print</b><small>打印</small></button><button class="ghost" onclick="event.stopPropagation();archiveLesson()"><b>Archive</b><small>归档</small></button></div>
+    </div>
+    <div class="card report-card" onclick="setReportType('admin')">
+      <span class="badge">School</span><h2>School Report｜学校汇报版</h2><p class="muted">Formal class summary for coordinators, departments, or school records.</p>
+      <div class="report-actions"><button class="primary" onclick="event.stopPropagation();copyReportType('admin')"><b>Copy</b><small>复制</small></button><button class="ghost" onclick="event.stopPropagation();printReportType('admin')"><b>Print</b><small>打印</small></button><button class="ghost" onclick="event.stopPropagation();archiveLesson()"><b>Archive</b><small>归档</small></button></div>
+    </div>
+  </div>
+
+  <div class="grid two report-main-grid">
+    <div class="card compact-card">
+      <h2>Participation｜参与统计</h2>
+      <p class="muted">只统计 Present 学生；Absent 不算作未参与。</p>
+      <div class="participation" id="participationList"></div>
+    </div>
+    <div class="card compact-card">
+      <h2>Report Preview｜报告预览</h2>
+      <div class="report-tabs">
+        <button class="ghost" onclick="setReportType('parent')">Parent</button>
+        <button class="ghost" onclick="setReportType('teacher')">Teacher</button>
+        <button class="ghost" onclick="setReportType('admin')">School</button>
+      </div>
+      <label>Teacher Note｜教师备注</label>
+      <textarea id="teacherNote" placeholder="写一条本节课备注" oninput="renderRecords()"></textarea>
+      <div id="report" class="report"></div>
+    </div>
+  </div>
+
+  <div class="grid two">
+    <div class="card compact-card">
+      <h2>Lesson Archive｜课堂归档</h2>
+      <p class="muted">归档后可以保留本节课总结，再开始下一节课。</p>
+      <div class="archive-list" id="lessonArchive"></div>
+    </div>
+    <div class="card compact-card">
+      <h2>Session Log｜本节课日志</h2>
+      <div id="recordList"></div>
+    </div>
+  </div>
+
+  <div class="danger-actions-clean">
+    <button class="danger" onclick="confirmDo('records')"><b>Reset Today’s Session</b><small>只重置本节课</small></button>
+  </div>
+</section>
+
+<section id="endclass" class="screen">
+  <div class="hero end-hero">
+    <p class="muted">End Class｜结束课堂</p>
+    <h1>Class Summary</h1>
+    <p>用一个清楚的总结页面结束课堂。老师可以复制报告、开始新一轮，或者继续下一节课。</p>
+    <div class="global-context-bar" id="endClassContextBar"></div>
+    <div class="actions compact-actions">
+      <button class="primary" onclick="copyReport()"><b>Copy Report</b><small>复制报告</small></button>
+      <button class="ghost" onclick="printReport()"><b>Print</b><small>打印</small></button>
+      <button class="ghost" onclick="archiveLesson()"><b>Archive</b><small>归档</small></button>
+      <button class="gold" onclick="goName('tools')"><b>Continue</b><small>继续上课</small></button>
+    </div>
+  </div>
+
+  <div class="end-summary">
+    <div class="card">
+      <h2>Today｜本节课</h2>
+      <div class="grid two">
+        <div class="kpi"><b id="endPicked">0</b><p>点名 Picked</p></div>
+        <div class="kpi"><b id="endRewards">0</b><p>奖励 Rewards</p></div>
+        <div class="kpi"><b id="endPoints">0</b><p>积分 Points</p></div>
+        <div class="kpi"><b id="endMissing">0</b><p>未参与 Not Yet</p></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Report Center｜报告中心</h2>
+      <div class="report-tabs">
+        <button class="primary" onclick="setReportType('parent')">Parent 家长版</button>
+        <button class="ghost" onclick="setReportType('teacher')">Teacher 教师记录版</button>
+        <button class="ghost" onclick="setReportType('admin')">School 学校汇报版</button>
+      </div>
+      <div id="endReport" class="report-box"></div>
+    </div>
+  </div>
+</section>
+
+
+<section id="guide" class="screen">
+  <div class="hero">
+    <h1>Guide｜教师使用说明</h1>
+    <p>这页是给第一次使用的老师看的，帮助老师快速理解这个课堂工具箱怎么用、数据保存在哪里。</p>
+  </div>
+  <div class="card">
+    <h2>How to Use｜如何使用</h2>
+    <div class="guide-list">
+      <div><b>1. Create Class｜创建班级</b><p class="muted">在 Manage Class 页面添加班级名称、学生名单、奖品和小组。</p></div>
+      <div><b>2. Check Attendance｜确认出勤</b><p class="muted">上课前把缺席学生设置为 Absent，工具会自动排除。</p></div>
+      <div><b>3. Choose Template｜选择模板</b><p class="muted">在班级首页选择热身、词汇复习、阅读课、小组竞赛或课后奖励。</p></div>
+      <div><b>4. Start Class｜开始上课</b><p class="muted">使用点名、分组、积分、抽奖和倒计时。Class Mode 适合投屏。</p></div>
+      <div><b>5. End Class｜结束课堂</b><p class="muted">下课后复制课堂报告，查看未参与学生和小组积分。</p></div>
+      <div><b>6. Data｜数据保存</b><p class="muted">数据只保存在当前设备。换电脑前，请到 Settings 导出备份。</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="settings" class="screen">
+  <div class="hero">
+    <h1>Settings｜设置</h1>
+    <p>设置内容默认收起，需要时再展开，减少页面信息密度。</p>
+  </div>
+
+  <details class="card setting-card-clean">
+    <summary>Sound｜音效设置</summary>
+    <div class="setting-body">
+      <div class="sound-row">
+        <div><label>Sound 音效</label><select id="soundOn" onchange="saveSoundSettings()"><option value="on">On 开</option><option value="off">Off 关</option></select></div>
+        <div><label>Volume 音量</label><select id="soundVolume" onchange="saveSoundSettings()"><option value="0.25">Low 低</option><option value="0.55" selected>Medium 中</option><option value="0.9">High 高</option></select></div>
+        <div><label>Result Sound 结果音效</label><select id="soundStyle" onchange="saveSoundSettings()"><option value="soft">Soft 柔和</option><option value="fun">Fun 活泼</option></select></div>
+      </div>
+    </div>
+  </details>
+
+  <details class="card setting-card-clean">
+    <summary>Display｜显示主题</summary>
+    <div class="setting-body">
+      <p class="muted">主题只调整视觉氛围，不改变功能。</p>
+      <span class="theme-chip" onclick="setThemeMode('classic')">Classic｜经典</span>
+      <span class="theme-chip" onclick="setThemeMode('minimal')">Minimal｜极简</span>
+      <span class="theme-chip" onclick="setThemeMode('young')">Warm Classroom｜活力课堂</span>
+      <span class="theme-chip" onclick="setThemeMode('dark-projector')">Dark Projector｜深色投屏</span>
+    </div>
+  </details>
+
+
+  <details class="card setting-card-clean">
+    <summary>Classroom Display｜课堂显示</summary>
+    <div class="setting-body">
+      <div class="actions">
+        <button class="primary" onclick="toggleClassMode()"><b>Presentation</b><small>投屏模式</small></button>
+        <button class="ghost" onclick="toggleFull()"><b>Full Screen</b><small>全屏</small></button>
+        <button class="gold" onclick="toggleTheme()"><b>Theme</b><small>主题</small></button>
+        <button class="safe" id="soundBtn" onclick="toggleSound()"><b>Sound ON</b><small>声音开</small></button>
+        <button class="ghost" onclick="showInstall()"><b>Install App</b><small>安装移动版</small></button>
+      </div>
+    </div>
+  </details>
+
+  <details class="card setting-card-clean">
+    <summary>Backup｜备份与导入</summary>
+    <div class="setting-body">
+      <p class="muted">Data is saved on this device only. 数据只保存在当前设备，不会上传。更换电脑或清理浏览器前，请先导出备份。</p>
+      <div class="actions">
+        <button class="safe" onclick="exportAll()"><b>Export All</b><small>导出全部数据</small></button>
+        <button class="ghost" onclick="document.getElementById('importFile').click()"><b>Import</b><small>导入数据</small></button>
+        <input id="importFile" type="file" accept=".json" style="display:none">
+      </div>
+    </div>
+  </details>
+
+  <details class="card setting-card-clean">
+    <summary>About ClassKit｜关于产品</summary>
+    <div class="setting-body">
+      <div class="release-note"><span><b>ClassKit</b><br>Release-ready classroom interaction and reports tool.</span><span>Designed by Lin Rui</span></div>
+      <p class="muted" style="margin-top:10px">数据默认保存在当前浏览器设备中。发布或分享前，建议先用示范班级完整测试一次课堂流程。</p>
+    </div>
+  </details>
+
+  <details class="card setting-card-clean danger-zone">
+    <summary>Danger Zone｜危险操作</summary>
+    <div class="setting-body">
+      <p class="muted">清空后会删除所有班级、课堂记录和积分，无法撤销。</p>
+      <button class="danger" onclick="confirmDo('all')"><b>Clear All Data</b><small>清空全部数据</small></button>
+    </div>
+  </details>
+</section>
+<div class="footer-brand"><span>ClassKit</span><span>Designed for teachers｜Designed by Lin Rui</span></div>
+</main>
+
+
+<div class="toast" id="toast"></div>
+
+
+<div class="modal" id="onboard">
+  <div class="box">
+    <h2>Welcome to ClassKit｜欢迎使用 ClassKit</h2>
+    <p class="muted">Step 1：Create Class 创建班级<br>Step 2：Add Students 添加学生<br>Step 3：Choose Template 选择课堂模板<br>Step 4：Start Class 开始上课</p>
+    <div class="attendance-callout">Tip｜提示：第一次使用可以体验示范班级；正式使用时建议创建自己的班级。</div>
+    <div class="actions" style="margin-top:14px">
+      <button class="primary" onclick="demoClass();hideModal('onboard');goName('dashboard')"><b>Use Demo Class</b><small>使用示范班级</small></button>
+      <button class="gold" onclick="hideModal('onboard');goName('class')"><b>Create My Class</b><small>创建我的班级</small></button>
+      <button class="ghost" onclick="hideModal('onboard')"><b>Later</b><small>稍后再说</small></button>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal" id="install">
+  <div class="box">
+    <h2>Install Mobile App｜安装移动版</h2>
+    <p class="muted">iPhone / iPad：Safari 打开网页，点击分享，然后选择 Add to Home Screen。<br>Android：Chrome 打开网页，点击菜单，然后选择 Add to Home screen 或 Install App。<br>电脑端：Chrome / Edge 地址栏可安装。</p>
+    <button class="primary" onclick="hideModal('install')">OK</button>
+  </div>
+</div>
+
+
+<div class="modal" id="templateModal">
+  <div class="box">
+    <h2 id="templateTitle">Template Preview｜模板预览</h2>
+    <div id="templatePreview" class="template-preview"></div>
+    <div class="actions" style="margin-top:14px">
+      <button class="primary" onclick="confirmTemplateApply()"><b>Apply Template</b><small>应用模板</small></button>
+      <button class="ghost" onclick="hideModal('templateModal')"><b>Cancel</b><small>取消</small></button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="confirm">
+  <div class="box">
+    <h2>Confirm｜确认操作</h2>
+    <p class="muted" id="confirmText">This action cannot be undone. 是否继续？</p><p class="confirm-helper" id="confirmHelper">危险操作请输入 RESET；重置本节课只需点击 Confirm。</p><input id="confirmInput" placeholder="需要时输入 RESET">
+    <div class="actions">
+      <button class="danger" onclick="doConfirm()"><b>Confirm</b><small>确认</small></button>
+      <button class="ghost" onclick="hideModal('confirm')"><b>Cancel</b><small>取消</small></button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const $ = id => document.getElementById(id);
+let classes = {};
+let currentClass = null;
+let records = [];
+let scores = {};
+let participation = {};
+let sound = true;
+let currentTool = "draw";
+let currentTemplate = "Default";
+let doneDraw = [];
+let donePick = [];
+let lastPoint = null;
+let timer = null;
+let seconds = 180;
+let pending = "";
+let attendance = {};
+let manualParticipation = {};
+let selectedDrawPoolMode = "engaged";
+let pendingTemplate = null;
+let lastPickRecord = null;
+let lastRewardRecord = null;
+let reportType = "teacher";
+let actionStack = [];
+let currentSessionDate = "";
+let sessionStarted = false;
+let soundSettings = {on:"on", volume:0.55, style:"soft"};
+let themeMode = "classic";
+let lessonArchives = [];
+
+/* ===== ClassKit Cloud Save Settings =====
+   1) Create a Supabase project.
+   2) Replace the two placeholders below with your own Project URL and anon public key.
+   3) Run the SQL supplied with this file in Supabase SQL Editor.
+   4) In Supabase Auth settings, turn OFF email confirmation for this username-password version.
+   Never put service_role key in frontend code. */
+const SUPABASE_URL = "https://bmsmiqaftgroxdjcqgzx.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_yentLcZdcEnolXDg1j-lGg_MRo6hZGl";
+const CLOUD_TABLE = "user_data";
+let supabaseClient = null;
+let cloudUser = null;
+let cloudUsername = "";
+let cloudLoaded = false;
+let cloudSaveTimer = null;
+let cloudLastSavedAt = 0;
+let cloudPendingImportPromptShown = false;
+
+
+function nextFlow(){
+  const order = ["picker","group","points","draw"];
+  const index = order.indexOf(currentTool);
+  if(index === -1 || index === order.length - 1){ openEndClass(); return; }
+  setToolByName(order[index + 1]);
+}
+function startTodayClass(){
+  const classNames = Object.keys(classes);
+  if(!classNames.length){ showOnboarding(); return; }
+  if(!currentClass || !classes[currentClass]){
+    loadClass(classNames[0]);
+  }
+  beginTodayAttendance();
+  goName("attendance");
+  toast("Attendance ready 默认全部 Present，请只修改缺勤学生");
+}
+function beginTodayAttendance(){
+  currentSessionDate = new Date().toLocaleDateString();
+  sessionStarted = false;
+  attendance = {};
+  manualParticipation = {};
+  records = [];
+  scores = {};
+  participation = {};
+  currentStudents().forEach(name => attendance[name] = "present");
+  listFrom("classRoster").forEach(name => attendance[name] = "present");
+  doneDraw = [];
+  donePick = [];
+  actionStack = [];
+  saveData();
+  if($("drawPoolMode")) $("drawPoolMode").value = selectedDrawPoolMode || "engaged";
+renderAttendance();
+  updateSessionStatus();
+  if(typeof updateDashboardStatusCenter === "function") updateDashboardStatusCenter();
+  if(typeof renderOperationalContext === "function") renderOperationalContext();
+  renderGlobalContextBars();
+}
+function confirmAttendanceStart(){
+  sessionStarted = true;
+  setToolByName("picker");
+  goName("tools");
+  saveData();
+  toast("Class started 只计算 Present 学生");
+}
+function updateFlowProgress(){
+  const order = ["picker","group","points","draw"];
+  document.querySelectorAll("[data-flow]").forEach(item => {
+    const flow = item.dataset.flow;
+    item.classList.toggle("on", flow === currentTool);
+    item.classList.toggle("done", order.indexOf(flow) < order.indexOf(currentTool));
+  });
+}
+function openEndClass(){
+  loadSoundSettings();
+renderRecords();
+  goName("endclass");
+}
+function setSimpleRewards(level){
+  const presets = {
+    common:"Sticker 贴纸*8\n+1 Point 加1分*6\nHigh Five 击掌奖励*5\nLucky Next Time 下次好运*4",
+    encourage:"Good Try Card 鼓励卡*6\nTry Again 再试一次*5\nChoose a Friend 选择朋友帮忙*3\nLucky Next Time 下次好运*4",
+    special:"Star Card 星星卡*3\nTeacher’s Choice 老师决定*2\nBonus Question 加题机会*3\nChoose a Song 选一首歌*1"
+  };
+  $("rewards").value = presets[level] || presets.common;
+  toast("Rewards updated 奖品已更新");
+}
+function renderEndSummary(){
+  if(!$("endPicked")) return;
+  const pickedCount = records.filter(r => r.type === "pick").length;
+  const rewardCount = records.filter(r => r.type === "reward").length;
+  const pointTotal = records.filter(r => r.type === "points").reduce((sum,r) => sum + Math.abs(Number(r.value) || 0), 0);
+  const g = attendanceGroups();
+  const missing = g.notYet.length;
+  $("endPicked").textContent = pickedCount;
+  $("endRewards").textContent = rewardCount;
+  $("endPoints").textContent = pointTotal;
+  $("endMissing").textContent = missing;
+  if($("endReport")) $("endReport").textContent = buildReport(reportType);
+}
+
+function listFrom(id){
+  return ($(id).value || "").split(/\n|,/).map(x => x.trim()).filter(Boolean);
+}
+function escapeHtml(value){
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[char]));
+}
+function safeForJs(value){
+  return String(value).replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(/\n/g," ");
+}
+function toast(text){
+  $("toast").textContent = text;
+  $("toast").classList.add("show");
+  setTimeout(() => $("toast").classList.remove("show"), 1600);
+}
+function beep(freq = 640, duration = 100){
+  if(!sound) return;
+  try{
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if(!AudioCtx) return;
+    const audio = new AudioCtx();
+    const osc = audio.createOscillator();
+    const gain = audio.createGain();
+    const volume = Math.max(0.02, Math.min(0.09, (soundSettings?.volume || 0.55) * 0.08));
+    osc.frequency.value = freq;
+    osc.type = "sine";
+    gain.gain.setValueAtTime(volume, audio.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audio.currentTime + duration / 1000);
+    osc.connect(gain);
+    gain.connect(audio.destination);
+    osc.start();
+    setTimeout(() => { osc.stop(); audio.close(); }, duration + 20);
+  }catch(error){}
+}
+function successSound(){ beep(820,120); setTimeout(() => beep(1040,120),140); }
+function failSound(){ beep(220,150); }
+
+/* Draw rolling sound: light suspense chimes while the reward is rolling.
+   It is only triggered by the user clicking Start Draw, so browser autoplay rules are respected. */
+function drawRollingSoundStep(step = 0){
+  if(!sound) return;
+  try{
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if(!AudioCtx) return;
+    const audio = new AudioCtx();
+    const t = audio.currentTime;
+    const volume = Math.max(0.018, Math.min(0.075, (soundSettings?.volume || 0.55) * 0.075));
+    const baseNotes = [523,587,659,784,880,988,1046];
+    const freq = baseNotes[step % baseNotes.length] * (step > 14 ? 1.08 : 1);
+
+    const main = audio.createOscillator();
+    const shimmer = audio.createOscillator();
+    const gain = audio.createGain();
+    const shimmerGain = audio.createGain();
+
+    main.type = "triangle";
+    shimmer.type = "sine";
+    main.frequency.setValueAtTime(freq, t);
+    main.frequency.exponentialRampToValueAtTime(freq * 1.08, t + 0.055);
+    shimmer.frequency.setValueAtTime(freq * 2, t);
+
+    gain.gain.setValueAtTime(0.001, t);
+    gain.gain.exponentialRampToValueAtTime(volume, t + 0.008);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.09);
+    shimmerGain.gain.setValueAtTime(volume * 0.28, t);
+    shimmerGain.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+
+    main.connect(gain);
+    shimmer.connect(shimmerGain);
+    gain.connect(audio.destination);
+    shimmerGain.connect(audio.destination);
+    main.start(t);
+    shimmer.start(t);
+    main.stop(t + 0.1);
+    shimmer.stop(t + 0.1);
+    setTimeout(() => audio.close(), 150);
+  }catch(error){}
+}
+function drawFinalSurpriseSound(){
+  if(!sound) return;
+  [784,988,1175,1568].forEach((freq, index) => setTimeout(() => beep(freq, 95), index * 75));
+}
+const STORAGE_KEY = "classKitSystem";
+const LEGACY_STORAGE_KEY = "classroomToolkitSystem";
+function getClassKitData(){
+  persistCurrentClassState();
+  if($("drawPoolMode")) selectedDrawPoolMode = $("drawPoolMode").value;
+  return {classes,currentClass,records,scores,participation,manualParticipation,selectedDrawPoolMode,currentTemplate,attendance,currentSessionDate,sessionStarted,soundSettings,themeMode,lessonArchives};
+}
+function applyClassKitData(data){
+  data = data || {};
+  classes = data.classes || {};
+  currentClass = data.currentClass || null;
+  records = data.records || [];
+  scores = data.scores || {};
+  participation = data.participation || {};
+  manualParticipation = data.manualParticipation || {};
+  selectedDrawPoolMode = data.selectedDrawPoolMode || selectedDrawPoolMode || "engaged";
+  currentTemplate = data.currentTemplate || "Default";
+  attendance = data.attendance || attendance || {};
+  soundSettings = data.soundSettings || soundSettings;
+  themeMode = data.themeMode || "classic";
+  lessonArchives = data.lessonArchives || [];
+  currentSessionDate = data.currentSessionDate || currentSessionDate || "";
+  sessionStarted = !!data.sessionStarted;
+  ensureMultiClassMigration(data);
+  if(currentClass && classes[currentClass]) restoreClassState(currentClass);
+  applyThemeMode();
+}
+function renderAfterDataLoad(){
+  renderClassOptions();
+  renderRecords();
+  updateDashboard();
+  renderAttendance();
+  renderLeaderboard();
+  updateSessionStatus();
+  updateDrawPoolHint();
+  if(typeof renderGlobalContextBars === "function") renderGlobalContextBars();
+  if(typeof updateDashboardStatusCenter === "function") updateDashboardStatusCenter();
+}
+function usernameToEmail(username){
+  const clean = String(username || "").trim().toLowerCase().replace(/[^a-z0-9._-]/g,"_").replace(/^_+|_+$/g,"");
+  return clean ? `${clean}@classkit.local` : "";
+}
+function isSupabaseConfigured(){
+  return SUPABASE_URL && SUPABASE_ANON_KEY && !SUPABASE_URL.includes("YOUR_SUPABASE") && !SUPABASE_ANON_KEY.includes("YOUR_SUPABASE");
+}
+function setCloudMessage(text, isError = true){
+  const el = $("cloudAuthMessage");
+  if(el){ el.textContent = text || ""; el.style.color = isError ? "var(--danger)" : "var(--safe)"; }
+}
+function setCloudSaveStatus(text){ if($("saveStatus")) $("saveStatus").textContent = text; }
+function setCloudOverlay(show){ if($("cloudAuthOverlay")) $("cloudAuthOverlay").classList.toggle("hidden", !show); }
+function updateCloudUserUI(){
+  const chip = $("cloudUserChip");
+  if(chip) chip.classList.toggle("show", !!cloudUser);
+  if($("cloudUserName")) $("cloudUserName").textContent = cloudUsername || cloudUser?.email || "—";
+}
+async function initializeCloudApp(){
+  if(!isSupabaseConfigured()){
+    if($("cloudConfigWarning")) $("cloudConfigWarning").classList.add("show");
+    setCloudMessage("当前文件还没有填写 Supabase 配置，所以不能真正云端登录。请先替换 SUPABASE_URL 和 SUPABASE_ANON_KEY。", true);
+    setCloudOverlay(true);
+    return;
+  }
+  supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  bindCloudAuthEvents();
+  const {data:{session}} = await supabaseClient.auth.getSession();
+  if(session?.user){
+    await enterCloudSession(session.user);
+  }else{
+    setCloudOverlay(true);
+    setCloudSaveStatus("Please login to sync cloud data｜请登录后同步云端数据");
+  }
+}
+function bindCloudAuthEvents(){
+  if($("cloudLoginBtn")) $("cloudLoginBtn").onclick = () => cloudLogin(false);
+  if($("cloudSignupBtn")) $("cloudSignupBtn").onclick = () => cloudLogin(true);
+  ["cloudUsername","cloudPassword"].forEach(id => {
+    const el = $(id);
+    if(el) el.addEventListener("keydown", e => { if(e.key === "Enter") cloudLogin(false); });
+  });
+}
+async function cloudLogin(createAccount){
+  const username = ($("cloudUsername")?.value || "").trim();
+  const password = ($("cloudPassword")?.value || "").trim();
+  if(!username || !password){ setCloudMessage("请输入用户名和密码"); return; }
+  const email = usernameToEmail(username);
+  setCloudMessage(createAccount ? "Creating account..." : "Logging in...", false);
+  try{
+    let result;
+    if(createAccount){
+      result = await supabaseClient.auth.signUp({email,password,options:{data:{username}}});
+      if(result.error) throw result.error;
+      if(!result.data.session && !result.data.user){ setCloudMessage("账号已创建。请检查 Supabase 是否关闭了邮箱确认，然后再登录。", false); return; }
+    }else{
+      result = await supabaseClient.auth.signInWithPassword({email,password});
+      if(result.error) throw result.error;
+    }
+    const user = result.data.user || result.data.session?.user;
+    if(user) await enterCloudSession(user, username);
+  }catch(error){
+    const msg = String(error?.message || error);
+    if(msg.toLowerCase().includes("invalid login")) setCloudMessage("用户名或密码不正确");
+    else if(msg.toLowerCase().includes("already registered")) setCloudMessage("账号已存在，请直接登录");
+    else setCloudMessage(msg);
+  }
+}
+async function enterCloudSession(user, typedUsername){
+  cloudUser = user;
+  cloudUsername = typedUsername || user?.user_metadata?.username || (user?.email || "").split("@")[0] || "Teacher";
+  cloudLoaded = false;
+  updateCloudUserUI();
+  setCloudOverlay(false);
+  setCloudSaveStatus("Loading cloud data...｜正在加载云端数据");
+  await loadData();
+  cloudLoaded = true;
+  await offerLegacyImportIfNeeded();
+  setCloudSaveStatus("Cloud ready｜云端已连接");
+}
+async function cloudLogout(){
+  if(supabaseClient) await supabaseClient.auth.signOut();
+  cloudUser = null; cloudUsername = ""; cloudLoaded = false;
+  updateCloudUserUI();
+  setCloudOverlay(true);
+  setCloudSaveStatus("Logged out｜已退出登录");
+}
+async function cloudFetchData(){
+  if(!cloudUser || !supabaseClient) return null;
+  const {data,error} = await supabaseClient.from(CLOUD_TABLE).select("data").eq("user_id", cloudUser.id).maybeSingle();
+  if(error) throw error;
+  return data?.data || null;
+}
+async function cloudSaveNow(){
+  if(!cloudUser || !supabaseClient || !cloudLoaded) return;
+  const payload = getClassKitData();
+  localStorage.setItem(STORAGE_KEY + "_cache_" + cloudUser.id, JSON.stringify(payload));
+  setCloudSaveStatus("Saving to cloud...｜正在保存到云端");
+  const {error} = await supabaseClient.from(CLOUD_TABLE).upsert({user_id:cloudUser.id,data:payload,updated_at:new Date().toISOString()},{onConflict:"user_id"});
+  if(error) throw error;
+  cloudLastSavedAt = Date.now();
+  setCloudSaveStatus("Saved to cloud " + new Date().toLocaleTimeString() + "｜已保存到云端");
+}
+function scheduleCloudSave(){
+  clearTimeout(cloudSaveTimer);
+  cloudSaveTimer = setTimeout(async () => {
+    try{ await cloudSaveNow(); }
+    catch(error){ setCloudSaveStatus("Sync failed, saved locally｜同步失败，已先保存到本机"); }
+  }, 650);
+}
+async function offerLegacyImportIfNeeded(){
+  if(cloudPendingImportPromptShown || !cloudUser) return;
+  cloudPendingImportPromptShown = true;
+  const hasCloudData = Object.keys(classes || {}).length > 0 || (records || []).length > 0 || (lessonArchives || []).length > 0;
+  const legacyRaw = localStorage.getItem("classKitSystem") || localStorage.getItem("classroomToolkitSystem");
+  if(hasCloudData || !legacyRaw) return;
+  let legacyData = null;
+  try{ legacyData = JSON.parse(legacyRaw); }catch(error){}
+  if(!legacyData || !Object.keys(legacyData).length) return;
+  if(confirm("检测到本机旧版课堂数据，是否导入到当前云端账号？\nImport old local ClassKit data into this cloud account?")){
+    applyClassKitData(legacyData);
+    renderAfterDataLoad();
+    await cloudSaveNow();
+    toast("旧数据已导入云端账号");
+  }
+}
+async function clearCurrentCloudData(){
+  if(!cloudUser || !supabaseClient) return;
+  await supabaseClient.from(CLOUD_TABLE).upsert({user_id:cloudUser.id,data:{},updated_at:new Date().toISOString()},{onConflict:"user_id"});
+  localStorage.removeItem(STORAGE_KEY + "_cache_" + cloudUser.id);
+}
+function saveData(){
+  const payload = getClassKitData();
+  if(cloudUser) localStorage.setItem(STORAGE_KEY + "_cache_" + cloudUser.id, JSON.stringify(payload));
+  else localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+  if(cloudUser && cloudLoaded) scheduleCloudSave();
+  else if($("saveStatus")) $("saveStatus").textContent = "Saved locally " + new Date().toLocaleTimeString() + "｜已本机暂存";
+}
+async function loadData(){
+  try{
+    let data = null;
+    if(cloudUser){
+      data = await cloudFetchData();
+      if(!data){
+        const cache = localStorage.getItem(STORAGE_KEY + "_cache_" + cloudUser.id);
+        data = cache ? JSON.parse(cache) : {};
+      }
+    }else{
+      const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(LEGACY_STORAGE_KEY) || "{}";
+      data = JSON.parse(saved);
+    }
+    applyClassKitData(data || {});
+  }catch(error){
+    setCloudSaveStatus("Cloud load failed, using local cache｜云端加载失败，使用本机缓存");
+    try{
+      const cache = cloudUser ? localStorage.getItem(STORAGE_KEY + "_cache_" + cloudUser.id) : localStorage.getItem(STORAGE_KEY);
+      applyClassKitData(cache ? JSON.parse(cache) : {});
+    }catch(e){}
+  }
+  renderAfterDataLoad();
+}
+function goName(name){
+  document.body.dataset.screen = name;
+  if(name !== "tools") document.body.classList.remove("class-mode-active");
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("on"));
+  const target = $(name);
+  if(target) target.classList.add("on");
+  document.querySelectorAll("nav button").forEach(b => b.classList.toggle("on", b.dataset.nav === name));
+  document.querySelectorAll(".mobile-bottom-nav button").forEach(b => b.classList.toggle("on", b.dataset.mobile === name));
+  window.scrollTo({top:0, behavior:"smooth"});
+  renderAttendance();
+  renderLeaderboard();
+  renderEndSummary();
+  updateSessionStatus();
+  if(typeof updateDashboardStatusCenter === "function") updateDashboardStatusCenter();
+  if(typeof renderGlobalContextBars === "function") renderGlobalContextBars();
+}
+function startClass(){
+  if(!Object.keys(classes).length){ showOnboarding(); return; }
+  goName("startflow");
+}
+function showOnboarding(){ $("onboard").classList.add("show"); }
+function hideModal(id){ $(id).classList.remove("show"); }
+function showInstall(){ $("install").classList.add("show"); }
+function setMode(editing){
+  document.body.classList.toggle("edit", editing);
+  $("classModeBtn").classList.toggle("on", !editing);
+  $("editModeBtn").classList.toggle("on", editing);
+}
+function setTool(tool, button){
+  currentTool = tool;
+  document.querySelectorAll(".tabs button").forEach(btn => btn.classList.remove("on"));
+  if(button) button.classList.add("on");
+  ["draw","picker","group","points","timer"].forEach(name => {
+    const view = $(name + "View");
+    view.style.display = name === tool ? (name === "group" || name === "points" ? "block" : "grid") : "none";
+  });
+  if(tool === "group") makeGroups();
+  if(tool === "points") makeScores();
+  if(tool === "timer") resetTimer();
+  updateFlowProgress();
+  renderLeaderboard();
+}
+function setToolByName(tool){
+  const order = ["draw","picker","group","points","timer"];
+  const index = order.indexOf(tool);
+  const btn = document.querySelectorAll(".tabs button")[index];
+  setTool(tool, btn);
+}
+function flowTo(tool){
+  setToolByName(tool);
+  goName("tools");
+}
+function runTool(){
+  const actions = {draw:drawReward, picker:pickName, group:makeGroups, points:makeScores, timer:startTimer};
+  actions[currentTool]();
+}
+
+
+function syncRewardCards(){
+  const rows = [];
+  for(let i=1;i<=3;i++){
+    const name = ($("rewardName"+i)?.value || "").trim();
+    const chance = $("rewardChance"+i)?.value || "4";
+    if(name) rows.push(name + "*" + chance);
+  }
+  if(rows.length) $("rewards").value = rows.join("\n");
+}
+function hydrateRewardCards(){
+  const items = ($("rewards")?.value || "").split(/\n/).map(x=>x.trim()).filter(Boolean).slice(0,3);
+  items.forEach((item,idx)=>{
+    const m = item.match(/^(.*?)(?:\*(\d+))?$/);
+    const name = (m && m[1] ? m[1].trim() : item);
+    const chance = (m && m[2]) || "4";
+    const i = idx + 1;
+    if($("rewardName"+i)) $("rewardName"+i).value = name;
+    if($("rewardChance"+i)) $("rewardChance"+i).value = ["8","4","1"].includes(chance) ? chance : "4";
+  });
+}
+function renderLeaderboard(){
+  if(!$("leaderboardList")) return;
+  const rows = Object.entries(scores || {}).sort((a,b)=>b[1]-a[1]);
+  $("leaderboardList").innerHTML = rows.map(([team,score],idx)=>`
+    <div class="leader-row">
+      <div class="leader-rank">${idx+1}</div>
+      <b>${escapeHtml(team)}</b>
+      <strong>${score} pts</strong>
+    </div>
+  `).join("") || '<div class="empty-state">No teams yet｜还没有小组</div>';
+}
+function setReportType(type){
+  reportType = type;
+  document.querySelectorAll(".report-tabs button").forEach(btn => {
+    const active = btn.getAttribute("onclick")?.includes("'" + type + "'");
+    btn.classList.toggle("primary", !!active);
+    btn.classList.toggle("ghost", !active);
+  });
+  renderEndSummary();
+  if($("report")) $("report").textContent = buildReport(reportType || "teacher");
+}
+function buildReport(type){
+  const g = attendanceGroups();
+  const students = g.students;
+  const activeStudents = g.present;
+  const absentStudents = g.absent;
+  const excludedStudents = g.excluded;
+  const missing = g.notYet;
+  const topTeam = Object.entries(scores || {}).sort((a,b)=>b[1]-a[1])[0];
+  const pickedCount = records.filter(r => r.type === "pick").length;
+  const rewardCount = records.filter(r => r.type === "reward").length;
+  const pointTotal = records.filter(r => r.type === "points").reduce((sum,r) => sum + Math.abs(Number(r.value) || 0), 0);
+  const winnerLine = topTeam ? `${topTeam[0]} (${topTeam[1]} points)` : "No team result yet 暂无小组结果";
+  const note = $("teacherNote") ? ($("teacherNote").value || "") : "";
+  const nextSuggestion = buildNextClassSuggestion(g, pickedCount, rewardCount, topTeam);
+  const absentLine = absentStudents.length ? absentStudents.join(", ") : "None 暂无";
+  const excludedLine = excludedStudents.length ? excludedStudents.join(", ") : "None 暂无";
+  const missingLine = missing.length ? missing.join(", ") : "None 暂无";
+  const participationRate = activeStudents.length ? Math.round((activeStudents.length - missing.length) / activeStudents.length * 100) : 0;
+  const reportClass = currentClass || "Untitled Class";
+  const reportDate = currentSessionDate || new Date().toLocaleDateString();
+  const recentLines = records.filter(r=>r.type!=="participation").slice(0,10).map(r=>`- ${r.time} ${r.type}: ${r.detail}`).join("\n") || "No records yet 暂无记录";
+  if(type === "parent"){
+    return `Parent Report｜家长沟通版
+
+Dear Parent,
+您好！以下是今天的课堂简要反馈。
+
+Class｜班级：${reportClass}
+Date｜日期：${reportDate}
+Attendance｜出勤：Present ${activeStudents.length}/${students.length}; Absent: ${absentLine}
+
+Class Activities｜课堂活动
+Students took part in classroom activities such as participation checks, group points, rewards, and timer tasks when used.
+今天课堂根据实际情况进行了参与互动、小组积分、奖励或计时等活动。
+
+Participation｜参与情况
+Participation coverage for Present students: ${participationRate}%.
+在场学生参与覆盖率：${participationRate}%。
+Students to encourage next time｜下次可继续鼓励参与的在场学生：${missingLine}
+
+Class Highlight｜课堂亮点
+Winning team｜优胜小组：${winnerLine}
+
+Teacher Note｜教师备注：${note || "None 暂无"}
+
+Thank you for your support.
+感谢您的支持。
+
+Generated by ClassKit`;
+  }
+  if(type === "teacher"){
+    return `Teacher Notes｜教师复盘版
+
+Class｜班级：${reportClass}
+Date｜日期：${reportDate}
+Template｜课堂模板：${currentTemplate}
+
+Attendance｜出勤
+Total students｜全班人数：${students.length}
+Present｜今日在场：${activeStudents.length}
+Absent｜今日缺勤：${absentLine}
+Excluded｜本轮不参与：${excludedLine}
+
+Activities｜课堂活动
+Picked times｜点名次数：${pickedCount}
+Reward times｜奖励次数：${rewardCount}
+Point changes｜积分变化：${pointTotal}
+Winning team｜优胜小组：${winnerLine}
+
+Participation｜参与覆盖
+Participation rate｜在场学生参与率：${participationRate}%
+Present but not yet participated｜在场但未参与：${missingLine}
+
+Teacher Note｜教师备注：${note || "None 暂无"}
+Next Class Suggestion｜下节课建议：${nextSuggestion}
+
+Recent Records｜最近课堂记录
+${recentLines}
+
+Generated by ClassKit`;
+  }
+  if(type === "admin"){
+    return `School Report｜学校汇报版
+
+Class Record Summary｜课堂记录总结
+Class｜班级：${reportClass}
+Date｜日期：${reportDate}
+Template｜课堂模板：${currentTemplate}
+
+Attendance｜出勤情况
+Total students｜全班人数：${students.length}
+Present｜在场人数：${activeStudents.length}
+Absent｜缺勤学生：${absentLine}
+Excluded｜本轮排除：${excludedLine}
+
+Class Activities｜课堂活动记录
+Picked｜点名次数：${pickedCount}
+Rewards｜奖励次数：${rewardCount}
+Point Changes｜积分变化：${pointTotal}
+
+Participation｜课堂参与
+Participation Rate｜在场学生参与率：${participationRate}%
+Present but not yet participated｜在场但未参与：${missingLine}
+
+Group Performance｜小组表现
+Winning Team｜优胜小组：${winnerLine}
+
+Teacher Note｜教师备注
+${note || "None 暂无"}
+
+Follow-up Suggestion｜后续建议
+${nextSuggestion}
+
+Data Scope｜数据范围
+This report is generated from the selected class only. Absent students are not counted as non-participating students.
+本报告仅根据当前所选班级生成。缺勤学生不会被统计为“未参与”。
+
+Generated by ClassKit`;
+  }
+  return `Simple Report｜简短版
+
+Class｜班级：${reportClass}
+Date｜日期：${reportDate}
+Present｜在场：${activeStudents.length}/${students.length}
+Absent｜缺勤：${absentLine}
+Picked｜点名：${pickedCount}
+Rewards｜奖励：${rewardCount}
+Winning Team｜优胜小组：${winnerLine}
+Present but Not Yet Participated｜在场但未参与：${missingLine}
+
+Generated by ClassKit`;
+}
+function buildNextClassSuggestion(g, pickedCount, rewardCount, topTeam){
+  if(!g.students.length) return "请先建立学生名单，再开始使用出勤、点名、分组和报告功能。";
+  if(!g.present.length) return "当前没有在场学生，请先确认今日出勤。";
+  if(g.absent.length >= Math.max(3, Math.ceil(g.students.length * 0.25))) return "缺勤比例较高，下节课建议安排 3-5 分钟复习，并在报告中单独记录缺勤学生。";
+  if(g.notYet.length > Math.max(2, Math.floor(g.present.length / 3))) return "仍有较多在场学生未参与，下节课建议先使用随机点名或小组轮答，确保覆盖更多学生。";
+  if(pickedCount < Math.max(2, Math.ceil(g.present.length * 0.25))) return "点名覆盖还可以增加，下节课建议把 Name Picker 放在热身环节使用。";
+  if(!rewardCount) return "本节课奖励较少，下节课可增加一个结尾奖励环节，提高课堂激励。";
+  if(!topTeam) return "本节课未形成明显小组结果，下节课可加入小组积分竞赛，增强课堂目标感。";
+  return "课堂参与较稳定，下节课可以继续保持随机点名、小组积分和奖励报告闭环。";
+}
+function saveSoundSettings(){
+  soundSettings = {
+    on: $("soundOn")?.value || "on",
+    volume: Number($("soundVolume")?.value || 0.55),
+    style: $("soundStyle")?.value || "soft"
+  };
+  saveData();
+  toast("Sound saved 音效已保存");
+}
+function loadSoundSettings(){
+  if($("soundOn")) $("soundOn").value = soundSettings.on || "on";
+  if($("soundVolume")) $("soundVolume").value = String(soundSettings.volume || 0.55);
+  if($("soundStyle")) $("soundStyle").value = soundSettings.style || "soft";
+}
+function setThemeMode(mode){
+  themeMode = mode;
+  applyThemeMode();
+  saveData();
+  toast("Theme updated 主题已更新");
+}
+function applyThemeMode(){
+  document.body.classList.remove("theme-minimal","theme-young","theme-dark-projector");
+  if(themeMode === "minimal") document.body.classList.add("theme-minimal");
+  if(themeMode === "young") document.body.classList.add("theme-young");
+  if(themeMode === "dark-projector") document.body.classList.add("theme-dark-projector");
+}
+
+function currentStateSnapshot(){
+  return {
+    records: Array.isArray(records) ? records : [],
+    scores: scores || {},
+    participation: participation || {},
+    manualParticipation: manualParticipation || {},
+    attendance: attendance || {},
+    currentTemplate: currentTemplate || "Default",
+    currentSessionDate: currentSessionDate || "",
+    sessionStarted: !!sessionStarted,
+    lessonArchives: Array.isArray(lessonArchives) ? lessonArchives : [],
+    doneDraw: Array.isArray(doneDraw) ? doneDraw : [],
+    donePick: Array.isArray(donePick) ? donePick : [],
+    lastUpdated: new Date().toLocaleString()
+  };
+}
+function persistCurrentClassState(){
+  if(!currentClass || !classes[currentClass]) return;
+  classes[currentClass].state = currentStateSnapshot();
+}
+function restoreClassState(name){
+  const state = (classes[name] && classes[name].state) || {};
+  records = Array.isArray(state.records) ? state.records : [];
+  scores = state.scores || {};
+  participation = state.participation || {};
+  manualParticipation = state.manualParticipation || {};
+  attendance = state.attendance || {};
+  currentTemplate = state.currentTemplate || "Default";
+  currentSessionDate = state.currentSessionDate || "";
+  sessionStarted = !!state.sessionStarted;
+  lessonArchives = Array.isArray(state.lessonArchives) ? state.lessonArchives : [];
+  doneDraw = Array.isArray(state.doneDraw) ? state.doneDraw : [];
+  donePick = Array.isArray(state.donePick) ? state.donePick : [];
+  actionStack = [];
+}
+function ensureMultiClassMigration(data){
+  if(currentClass && classes[currentClass] && !classes[currentClass].state){
+    classes[currentClass].state = {
+      records: data.records || records || [],
+      scores: data.scores || scores || {},
+      participation: data.participation || participation || {},
+      manualParticipation: data.manualParticipation || manualParticipation || {},
+      attendance: data.attendance || attendance || {},
+      currentTemplate: data.currentTemplate || currentTemplate || "Default",
+      currentSessionDate: data.currentSessionDate || currentSessionDate || "",
+      sessionStarted: !!(data.sessionStarted || sessionStarted),
+      lessonArchives: data.lessonArchives || lessonArchives || [],
+      doneDraw: [],
+      donePick: [],
+      lastUpdated: new Date().toLocaleString()
+    };
+  }
+}
+function resetSessionStateForNewClass(){
+  records = []; scores = {}; participation = {}; manualParticipation = {}; attendance = {}; currentTemplate = "Default";
+  currentSessionDate = ""; sessionStarted = false; lessonArchives = []; doneDraw = []; donePick = []; actionStack = [];
+}
+function renderCurrentClassPanel(){
+  if(!$('currentClassMeta')) return;
+  if(!currentClass || !classes[currentClass]){
+    $('currentClassMeta').innerHTML = '<span class="badge">No class selected｜未选择班级</span><span class="badge">Use Add Class or Demo Class｜请添加班级或体验示范班</span>';
+    return;
+  }
+  const item = classes[currentClass] || {};
+  const roster = String(item.roster || '').split(/\n|,/).map(x=>x.trim()).filter(Boolean);
+  const state = item.state || {};
+  const last = state.currentSessionDate || state.lastUpdated || 'No lesson yet 暂无课堂';
+  $('currentClassMeta').innerHTML = `
+    <span class="badge">${escapeHtml(currentClass)}</span>
+    <span class="badge">${roster.length} students｜${roster.length} 名学生</span>
+    <span class="badge">Last｜最近：${escapeHtml(last)}</span>
+  `;
+}
+
+function currentStudents(){
+  const fromClassForm = listFrom("classRoster");
+  const fromTools = listFrom("names");
+  if(fromClassForm.length) return fromClassForm;
+  if(fromTools.length) return fromTools;
+  if(currentClass && classes[currentClass] && classes[currentClass].roster){
+    return String(classes[currentClass].roster).split(/\n|,/).map(x => x.trim()).filter(Boolean);
+  }
+  return [];
+}
+function normalizedStatus(name){
+  const status = attendance[name] || "present";
+  if(status === "active") return "present";
+  return status;
+}
+function attendanceGroups(){
+  const students = currentStudents();
+  const present = students.filter(name => ["present","late"].includes(normalizedStatus(name)));
+  const absent = students.filter(name => normalizedStatus(name) === "absent");
+  const excluded = students.filter(name => normalizedStatus(name) === "excluded");
+  const engaged = present.filter(name => !!manualParticipation[name]);
+  const notYet = present.filter(name => !participation[name]);
+  return {students,present,absent,excluded,engaged,notYet};
+}
+function availableStudents(){
+  return attendanceGroups().present;
+}
+function drawEligibleStudents(){
+  const g = attendanceGroups();
+  const mode = $("drawPoolMode") ? $("drawPoolMode").value : "present";
+  return mode === "engaged" ? g.engaged : g.present;
+}
+function updateDrawPoolHint(){
+  const hint = $("drawPoolHint");
+  const select = $("drawPoolMode");
+  if(!hint || !select) return;
+  const g = attendanceGroups();
+  if(select.value === "engaged"){
+    hint.innerHTML = `精准抽奖：仅从已出勤且勾选课堂参与的学生中抽取。Eligible: ${g.engaged}/${g.present} Present students.<br>Precise draw: Present + participation checked only.`;
+  }else{
+    hint.innerHTML = `全班出勤抽奖：从全部已出勤学生中抽取，缺勤学生自动排除。Eligible: ${g.present}/${g.students} students.<br>Present-students draw: all Present students only; Absent students are excluded.`;
+  }
+}
+function setManualParticipation(name, checked){
+  if(!["present","late"].includes(normalizedStatus(name))){
+    manualParticipation[name] = false;
+  }else{
+    manualParticipation[name] = !!checked;
+  }
+  saveData();
+  renderAttendance();
+  updateDrawPoolHint();
+  updateDashboardStatusCenter();
+}
+function ensureAttendance(){
+  currentStudents().forEach(name => { if(!attendance[name]) attendance[name] = "present"; });
+}
+function updateAttendanceSummary(){
+  const g = attendanceGroups();
+  const html = `
+    <div class="kpi"><b>${g.students.length}</b><p>Total｜全班</p></div>
+    <div class="kpi"><b>${g.present.length}</b><p>Present｜在场</p></div>
+    <div class="kpi"><b>${g.absent.length}</b><p>Absent｜缺勤</p></div>
+    <div class="kpi"><b>${g.engaged.length}</b><p>Participation Checked｜已勾选参与</p></div>
+    <div class="kpi"><b>${g.excluded.length}</b><p>Excluded｜本轮不参与</p></div>
+  `;
+  if($("attendanceSummary")) $("attendanceSummary").innerHTML = html;
+}
+function updateSessionStatus(){
+  const g = attendanceGroups();
+  if($("sessionStatus")){
+    $("sessionStatus").innerHTML = `
+      <span class="badge">Today｜今天：${currentSessionDate || new Date().toLocaleDateString()}</span>
+      <span class="badge">Present｜在场：${g.present.length}</span>
+      <span class="badge">Absent｜缺勤：${g.absent.length}</span>
+      <span class="badge">Checked｜已勾选：${g.engaged.length}</span>
+      <span class="badge">Template｜模板：${escapeHtml(currentTemplate)}</span>
+      <span class="badge">Round｜轮次：${Math.max(donePick.length, doneDraw.length) + 1}</span>
+    `;
+  }
+}
+function updateDashboardStatusCenter(){
+  const g = attendanceGroups();
+  const pickedCount = records.filter(r => r.type === "pick").length;
+  const rewardCount = records.filter(r => r.type === "reward").length;
+  const participationRate = g.present.length ? Math.round((g.present.length - g.notYet.length) / g.present.length * 100) : 0;
+  if($("dashboardStatusCenter")){
+    $("dashboardStatusCenter").innerHTML = `
+      <div class="status-tile"><b>${currentSessionDate || new Date().toLocaleDateString()}</b><span>Date｜日期</span></div>
+      <div class="status-tile"><b>${g.present.length}/${g.students.length}</b><span>Present｜在场</span></div>
+      <div class="status-tile"><b>${g.absent.length}</b><span>Absent｜缺勤</span></div>
+      <div class="status-tile"><b>${escapeHtml(currentTemplate)}</b><span>Template｜课堂模板</span></div>
+      <div class="status-tile"><b>${participationRate}%</b><span>Participation｜参与率</span></div>
+      <div class="status-tile"><b>${pickedCount}/${rewardCount}</b><span>Picked / Rewards｜点名/奖励</span></div>
+    `;
+  }
+  if($("dashboardSuggestion")) $("dashboardSuggestion").textContent = "Next Class Suggestion｜下节课建议：" + buildNextClassSuggestion(g, pickedCount, rewardCount, Object.entries(scores || {}).sort((a,b)=>b[1]-a[1])[0]);
+  renderProductReadiness();
+  renderTeacherInsights();
+  renderOperationalContext();
+  renderReportContextStrip();
+  renderGlobalContextBars();
+}
+function renderProductReadiness(){
+  if(!$('classReadiness')) return;
+  const g = attendanceGroups();
+  const teams = listFrom('teams');
+  const rewards = listFrom('rewards');
+  const items = [
+    {ok: !!currentClass, title:'Class selected｜已选择班级', note: currentClass || 'Please create or choose a class｜请先创建或选择班级'},
+    {ok: g.students.length > 0, title:'Student roster｜学生名单', note: g.students.length + ' students｜' + g.students.length + ' 名学生'},
+    {ok: g.present.length > 0, title:'Attendance ready｜出勤已确认', note: g.present.length + ' Present, ' + g.absent.length + ' Absent｜在场 ' + g.present.length + '，缺勤 ' + g.absent.length},
+    {ok: teams.length > 0, title:'Teams ready｜小组已设置', note: teams.length ? teams.join(' / ') : 'Optional: create teams for competition｜可选：创建小组用于竞赛'},
+    {ok: rewards.length > 0, title:'Rewards ready｜奖励已设置', note: rewards.length ? rewards.length + ' reward types｜' + rewards.length + ' 种奖励' : 'Optional: add rewards for motivation｜可选：添加课堂奖励'},
+    {ok: records.length > 0, title:'Report data｜报告数据', note: records.length ? records.length + ' records saved｜已记录 ' + records.length + ' 条' : 'Reports will become richer after activities｜活动后报告会更完整'}
+  ];
+  $('classReadiness').innerHTML = items.map(item => `<div class="readiness-item ${item.ok?'ok':'warn'}"><b>${item.title}</b><span>${escapeHtml(item.note)}</span></div>`).join('');
+}
+function renderTeacherInsights(){
+  if(!$('teacherInsights')) return;
+  const g = attendanceGroups();
+  const topTeam = Object.entries(scores || {}).sort((a,b)=>b[1]-a[1])[0];
+  const pickedCount = records.filter(r => r.type === 'pick').length;
+  const rewardCount = records.filter(r => r.type === 'reward').length;
+  const insights = [];
+  insights.push({title:'Attendance｜出勤', note: g.absent.length ? 'Absent today: ' + g.absent.join(', ') + '｜今日缺勤：' + g.absent.join('、') : 'No absent students marked｜暂未标记缺勤学生'});
+  insights.push({title:'Participation｜参与', note: g.notYet.length ? g.notYet.length + ' Present students not yet participated｜还有 ' + g.notYet.length + ' 名在场学生未参与' : 'All Present students have participated at least once｜在场学生至少参与过一次'});
+  insights.push({title:'Motivation｜激励', note: rewardCount ? rewardCount + ' rewards used｜已使用 ' + rewardCount + ' 次奖励' : 'No rewards yet; consider an end-class reward｜还没有奖励记录，可考虑下课奖励'});
+  insights.push({title:'Group Result｜小组结果', note: topTeam ? 'Leading team: ' + topTeam[0] + ' (' + topTeam[1] + ' pts)｜领先小组：' + topTeam[0] : 'No team points yet｜暂无小组积分'});
+  insights.push({title:'Next Step｜下一步', note: buildNextClassSuggestion(g, pickedCount, rewardCount, topTeam)});
+  $('teacherInsights').innerHTML = insights.map(item => `<div class="insight-item"><b>${escapeHtml(item.title)}</b><span>${escapeHtml(item.note)}</span></div>`).join('');
+}
+function renderAttendance(){
+  ensureAttendance();
+  const names = listFrom("classRoster").length ? listFrom("classRoster") : currentStudents();
+  names.forEach(name => { if(!attendance[name]) attendance[name] = "present"; });
+  const markup = names.map(name => {
+    const status = normalizedStatus(name);
+    return `
+    <div class="student-status status-${status}">
+      <b>${escapeHtml(name)}</b>
+      <select onchange="attendance['${safeForJs(name)}']=this.value; if(this.value!=='present' && this.value!=='late'){ manualParticipation['${safeForJs(name)}']=false; } saveData(); renderAttendance(); renderRecords(); renderClassCards(); updateSessionStatus(); updateDrawPoolHint();">
+        <option value="present" ${status==="present"?"selected":""}>Present 在场</option>
+        <option value="absent" ${status==="absent"?"selected":""}>Absent 缺勤</option>
+        <option value="excluded" ${status==="excluded"?"selected":""}>Excluded 本轮不参与</option>
+      </select>
+      <label class="participation-check ${status==="present"?"":"disabled"}">
+        <input type="checkbox" ${manualParticipation[name]?"checked":""} ${status==="present"?"":"disabled"} onchange="setManualParticipation('${safeForJs(name)}', this.checked)">
+        <span><b>Class Participation｜课堂参与</b>认真听课 / 跟随课堂学习</span>
+      </label>
+    </div>
+  `;}).join("") || '<div class="empty-state empty-action"><h3>No students yet｜还没有学生名单</h3><p>请先在班级管理中添加学生名单；添加后才能进行出勤、点名、分组和报告。</p><div class="actions"><button class="primary" onclick="goName(\'class\')"><b>Add Students</b><small>添加学生</small></button></div></div>';
+  if($("attendanceList")) $("attendanceList").innerHTML = markup;
+  if($("attendanceListMain")) $("attendanceListMain").innerHTML = markup;
+  updateAttendanceSummary();
+  updateSessionStatus();
+}
+function markAllActive(){
+  currentStudents().forEach(name => attendance[name] = "present");
+  listFrom("classRoster").forEach(name => attendance[name] = "present");
+  saveData(); renderAttendance(); renderRecords(); toast("All Present 已设置全部在场");
+}
+function clearAbsence(){
+  Object.keys(attendance || {}).forEach(name => {
+    if(attendance[name] === "absent") attendance[name] = "present";
+  });
+  saveData(); renderAttendance(); renderRecords(); updateDashboard(); toast("Absence cleared 已清除缺勤");
+}
+function checkDuplicateNames(){
+  const names = listFrom("classRoster");
+  const seen = {};
+  const duplicates = [];
+  names.forEach(name => { seen[name] = (seen[name] || 0) + 1; if(seen[name] === 2) duplicates.push(name); });
+  if($("nameCheck")){
+    $("nameCheck").textContent = duplicates.length ? "发现重复姓名｜Duplicate names: " + duplicates.join("、") : "Name check｜姓名检查：No duplicates 没有重复";
+  }
+  return duplicates;
+}
+function renderClassCards(){
+  if(!$("classCards")) return;
+  const names = Object.keys(classes);
+  $("classCards").innerHTML = names.map(name => {
+    const item = classes[name] || {};
+    const roster = (item.roster || "").split(/\n|,/).map(x=>x.trim()).filter(Boolean);
+    const studentCount = roster.length;
+    const teamCount = (item.teams || "").split(/\n|,/).map(x=>x.trim()).filter(Boolean).length;
+    const state = item.state || {};
+    const stateAttendance = state.attendance || {};
+    const absentCount = roster.filter(s => (stateAttendance[s] || "present") === "absent").length;
+    const last = state.currentSessionDate || state.lastUpdated || "No lesson yet";
+    const isCurrent = name === currentClass;
+    return `<div class="class-card ${isCurrent ? 'is-current' : ''}">
+      <div class="class-card-top"><h3>${escapeHtml(name)}</h3>${isCurrent ? '<span class="current-pill">Current 当前</span>' : ''}</div>
+      <div class="meta"><span class="badge">${studentCount} students</span><span class="badge">${teamCount} teams</span><span class="badge">${absentCount} absent</span><span class="badge">Last: ${escapeHtml(last)}</span></div>
+      <div class="actions">
+        <button class="primary" onclick="loadClass('${safeForJs(name)}');startTodayClass()"><b>Start</b><small>开始</small></button>
+        <button class="ghost" onclick="loadClass('${safeForJs(name)}');goName('dashboard')"><b>Open</b><small>打开</small></button>
+        <button class="ghost" onclick="loadClass('${safeForJs(name)}');goName('class')"><b>Edit</b><small>编辑</small></button>
+        <button class="ghost" onclick="duplicateClass('${safeForJs(name)}')"><b>Copy</b><small>复制班级</small></button>
+      </div>
+    </div>`;
+  }).join("") || `<div class="empty-state empty-action"><h3>No class yet｜还没有班级</h3><p>先创建一个班级，或使用示范班级快速体验完整流程。老师可以长期保存多个班级，并独立管理每个班级的数据。</p><div class="actions"><button class="primary" onclick="openAddClassEntry()"><b>Add Class</b><small>添加班级</small></button><button class="ghost" onclick="demoClass();goName('dashboard')"><b>Try Demo</b><small>体验示范</small></button></div></div>`;
+}
+function duplicateClass(sourceName){
+  const source = sourceName || currentClass;
+  if(!source || !classes[source]){ toast("No class selected 未选择班级"); return; }
+  let newName = source + " Copy";
+  let i = 2;
+  while(classes[newName]){ newName = source + " Copy " + i++; }
+  classes[newName] = JSON.parse(JSON.stringify(classes[source]));
+  currentClass = newName;
+  saveData(); renderClassOptions(); loadClass(newName); toast("Class duplicated 已复制班级");
+}
+
+function parseRewards(){
+  const result = [];
+  listFrom("rewards").forEach(item => {
+    const match = item.match(/^(.*?)(?:\*(\d+))?$/);
+    const name = (match && match[1] ? match[1] : item).trim();
+    const count = match && match[2] ? Number(match[2]) : 1;
+    for(let i=0;i<count;i++) result.push(name);
+  });
+  return result;
+}
+function randomItem(array){ return array[Math.floor(Math.random() * array.length)]; }
+function leastParticipated(names){
+  if(!names.length) return [];
+  const min = Math.min.apply(null, names.map(name => participation[name] || 0));
+  return names.filter(name => (participation[name] || 0) === min);
+}
+function markParticipation(name, type){
+  participation[name] = (participation[name] || 0) + 1;
+  records.unshift({time:new Date().toLocaleString(), type:"participation", detail:name + " participated by " + type, value:1});
+}
+function pushAction(type, payload){
+  actionStack.push({type, payload});
+  if(actionStack.length > 80) actionStack.shift();
+}
+function drawReward(){
+  const mode = $("drawMode").value;
+  let names = drawEligibleStudents();
+  if(mode === "norepeat") names = names.filter(name => !doneDraw.includes(name));
+  if(mode === "fair") names = leastParticipated(names);
+  const rewards = parseRewards();
+  if(!names.length || !rewards.length){
+    const poolMode = $("drawPoolMode") ? $("drawPoolMode").value : "present";
+    $("winner").textContent = "No Data";
+    $("prize").innerHTML = poolMode === "engaged" ? "请先勾选已出勤学生的课堂参与<br>Check participation for Present students first" : "请先确认出勤学生和奖品<br>Confirm Present students and rewards first";
+    toast(poolMode === "engaged" ? "请先勾选课堂参与学生" : "请先确认出勤学生和奖品");
+    return;
+  }
+  $("drawStatus").textContent = "Drawing｜正在抽奖";
+  $("drawView").classList.add("shake");
+  let count = 0;
+  const rolling = setInterval(() => {
+    $("winner").textContent = randomItem(names);
+    $("prize").textContent = randomItem(rewards);
+    drawRollingSoundStep(count);
+    count++;
+    if(count > 22){
+      clearInterval(rolling);
+      const winner = randomItem(names);
+      const prize = randomItem(rewards);
+      const noPrize = /next|again|下次|鼓励|no prize|try/i.test(prize);
+      $("winner").textContent = winner;
+      $("prize").textContent = prize;
+      $("drawView").classList.remove("shake");
+      doneDraw.push(winner);
+      markParticipation(winner, "reward draw");
+      noPrize ? failSound() : drawFinalSurpriseSound();
+      lastRewardRecord = {winner, prize};
+      record("reward", winner + " → " + prize, noPrize ? 0 : 1);
+      pushAction("reward", {winner, prize});
+      addHistory("Reward: " + winner + " → " + prize);
+    }
+  },70);
+}
+
+function undoLastPick(){
+  if(!lastPickRecord){ toast("No pick to undo 没有可撤销点名"); return; }
+  donePick = donePick.filter(name => name !== lastPickRecord.picked);
+  if(participation[lastPickRecord.picked]) participation[lastPickRecord.picked]--;
+  records = records.filter((r,idx) => !(idx < 8 && (r.type === "pick" && r.detail === lastPickRecord.picked)));
+  $("picked").textContent = "Undone";
+  lastPickRecord = null;
+  renderRecords(); saveData(); toast("Pick undone 已撤销点名");
+}
+function undoLastReward(){
+  if(!lastRewardRecord){ toast("No reward to undo 没有可撤销抽奖"); return; }
+  doneDraw = doneDraw.filter(name => name !== lastRewardRecord.winner);
+  if(participation[lastRewardRecord.winner]) participation[lastRewardRecord.winner]--;
+  const detail = lastRewardRecord.winner + " → " + lastRewardRecord.prize;
+  records = records.filter((r,idx) => !(idx < 8 && (r.type === "reward" && r.detail === detail)));
+  $("winner").textContent = "Undone";
+  $("prize").textContent = "Reward cancelled 已取消奖励";
+  lastRewardRecord = null;
+  renderRecords(); saveData(); toast("Reward undone 已撤销抽奖");
+}
+
+function resetDraw(){
+  doneDraw = [];
+  $("drawStatus").textContent = "Ready to draw｜准备抽奖";
+  $("winner").textContent = "Ready?";
+  $("prize").textContent = "Click Start 点击开始";
+}
+function pickName(){
+  let names = availableStudents().filter(name => !donePick.includes(name));
+  if(!names.length){
+    $("picked").textContent = "New Round?";
+    toast("本轮已完成，请点击新一轮");
+    return;
+  }
+  names = leastParticipated(names);
+  let count = 0;
+  const rolling = setInterval(() => {
+    $("picked").textContent = randomItem(names);
+    beep(500,35);
+    count++;
+    if(count > 18){
+      clearInterval(rolling);
+      const picked = randomItem(names);
+      donePick.push(picked);
+      $("picked").textContent = picked;
+      markParticipation(picked, "name picker");
+      successSound();
+      lastPickRecord = {picked};
+      record("pick", picked, 1);
+      pushAction("pick", {picked});
+      addHistory("Picked: " + picked);
+    }
+  },70);
+}
+function resetPicker(){ donePick = []; $("picked").textContent = "Ready?"; }
+function makeGroups(){
+  const names = availableStudents().sort(() => Math.random() - 0.5);
+  const count = Number($("groupCount").value) || 3;
+  const groups = Array.from({length:count}, () => []);
+  names.forEach((name,index) => groups[index % count].push(name));
+  $("groupsOut").innerHTML = groups.map((group,index) =>
+    '<div class="team"><h3>Group ' + (index+1) + '</h3><p>' + group.map(escapeHtml).join("<br>") + '</p></div>'
+  ).join("");
+  record("group", count + " groups", 1);
+}
+function makeScores(){
+  const teams = listFrom("teams").length ? listFrom("teams") : ["Red Team","Blue Team","Green Team"];
+  teams.forEach(team => { if(scores[team] == null) scores[team] = 0; });
+  renderScores();
+}
+function renderScores(){
+  const ranked = Object.entries(scores).sort((a,b) => b[1] - a[1]);
+  $("leader").textContent = ranked.length ? "Today’s Winner｜当前领先：" + ranked[0][0] + " (" + ranked[0][1] + ")" : "";
+  $("scoresOut").innerHTML = ranked.map(([team,value]) =>
+    '<div class="team"><h3>' + escapeHtml(team) + ' <span class="score">' + value + '</span></h3><div class="quick-score"><button class="safe" onclick="scoreTeam(\'' + safeForJs(team) + '\',1,1)">+1</button><button class="safe" onclick="scoreTeam(\'' + safeForJs(team) + '\',1,2)">+2</button><button class="ghost negative" onclick="scoreTeam(\'' + safeForJs(team) + '\',-1,1)">-1</button></div></div>'
+  ).join("");
+}
+function scoreTeam(team, direction, quickStep){
+  const step = quickStep || Number($("pointStep").value) || 1;
+  const delta = direction * step;
+  lastPoint = {team, delta};
+  scores[team] = (scores[team] || 0) + delta;
+  record("points", team + " " + (delta > 0 ? "+" : "") + delta + " " + $("reason").value, delta);
+  renderScores();
+  pushAction("points", {team, delta});
+}
+function undoPoint(){
+  if(!lastPoint){ toast("No action to undo 没有可撤销操作"); return; }
+  scores[lastPoint.team] = (scores[lastPoint.team] || 0) - lastPoint.delta;
+  records = records.filter((r,idx) => !(idx < 8 && r.type === "points" && r.detail.includes(lastPoint.team)));
+  lastPoint = null;
+  renderScores();
+  renderRecords(); saveData();
+  toast("Undone 已撤销");
+}
+function undoLastAction(){
+  const last = actionStack.pop();
+  if(!last){ toast("No recent action to undo 暂无可撤销操作"); return; }
+  if(last.type === "points"){
+    scores[last.payload.team] = (scores[last.payload.team] || 0) - last.payload.delta;
+    records = records.filter((r,idx) => !(idx < 10 && r.type === "points" && r.detail.includes(last.payload.team) && Number(r.value) === last.payload.delta));
+    lastPoint = null; renderScores(); renderRecords(); saveData(); toast("Last point action undone 已撤销上一条积分"); return;
+  }
+  if(last.type === "reward"){
+    lastRewardRecord = last.payload;
+    undoLastReward(); return;
+  }
+  if(last.type === "pick"){
+    lastPickRecord = last.payload;
+    undoLastPick(); return;
+  }
+  toast("Last action cannot be undone 此操作暂不支持撤销");
+}
+function resetTimer(){
+  clearInterval(timer);
+  const input = $("timerMin");
+  const minutes = input ? (Number(input.value) || 3) : 3;
+  seconds = Math.max(1, minutes) * 60;
+  showTime();
+  toast("Timer reset 计时器已重置");
+}
+function showTime(){
+  const minutes = String(Math.floor(seconds/60)).padStart(2,"0");
+  const secs = String(seconds%60).padStart(2,"0");
+  $("timerText").textContent = minutes + ":" + secs;
+}
+function startTimer(){
+  clearInterval(timer);
+  timer = setInterval(() => {
+    seconds--;
+    showTime();
+    if(seconds <= 0){
+      clearInterval(timer);
+      successSound();
+      record("timer", "Timer finished", 1);
+    }
+  },1000);
+}
+function pauseTimer(){ clearInterval(timer); }
+function addHistory(text){
+  $("history").innerHTML = '<span>' + new Date().toLocaleTimeString() + "｜" + escapeHtml(text) + '</span>' + $("history").innerHTML;
+}
+function record(type, detail, value){
+  records.unshift({time:new Date().toLocaleString(), type, detail, value});
+  renderRecords();
+  saveData();
+  updateDashboard();
+}
+function renderRecords(){
+  const visibleRecords = records.filter(r => r.type !== "participation");
+  const pickedCount = records.filter(r => r.type === "pick").length;
+  const rewardCount = records.filter(r => r.type === "reward").length;
+  const pointTotal = records.filter(r => r.type === "points").reduce((sum,r) => sum + Math.abs(Number(r.value) || 0), 0);
+  const activities = Array.from(new Set(visibleRecords.map(r => r.type)));
+
+  ["kPick","sPicked"].forEach(id => { if($(id)) $(id).textContent = pickedCount; });
+  ["kReward","sRewards"].forEach(id => { if($(id)) $(id).textContent = rewardCount; });
+  ["kPoint","sPoints"].forEach(id => { if($(id)) $(id).textContent = pointTotal; });
+  if($("sActivities")) $("sActivities").textContent = activities.length;
+
+  const g = attendanceGroups();
+  const students = g.present;
+  const max = Math.max(1, ...students.map(name => participation[name] || 0));
+  const notYet = g.notYet;
+  if($("participationList")){
+    const absentNote = g.absent.length ? '<div class="empty-state">Absent｜今日缺勤：' + g.absent.map(escapeHtml).join('、') + '</div>' : '';
+    $("participationList").innerHTML = students.map(name => {
+      const count = participation[name] || 0;
+      const width = Math.max(4, Math.round(count / max * 100));
+      return '<div><div class="row" style="justify-content:space-between"><b>' + escapeHtml(name) + '</b><span class="muted">' + count + '</span></div><div class="bar"><i style="width:' + width + '%"></i></div></div>';
+    }).join("") + absentNote || '<div class="empty-state"><h3>No Present students｜暂无在场学生</h3><p>请先确认今日出勤。Absent 学生不会计入未参与统计。</p></div>';
+  }
+
+  if($("report")) $("report").textContent = buildReport(reportType || "teacher");
+  renderReportContextStrip();
+  updateDashboardStatusCenter();
+  renderLeaderboard();
+  renderEndSummary();
+  renderLessonArchive();
+  if($("recordList")){
+    $("recordList").innerHTML = visibleRecords.map(r => '<span>' + escapeHtml(r.time) + "｜" + escapeHtml(r.type) + "｜" + escapeHtml(r.detail) + '</span>').join("") || '<div class="empty-state"><h3>No session log yet｜暂无课堂日志</h3><p>开始点名、抽奖或积分后，这里会自动记录本节课过程。</p></div>';
+  }
+}
+function renderOperationalContext(){
+  const g = attendanceGroups();
+  if($("toolsCurrentClass")){
+    if(!currentClass){
+      $("toolsCurrentClass").innerHTML = '<span class="badge warning-badge">No class selected｜未选择班级</span><span class="badge">Go to Class and add/select a class first｜请先添加或选择班级</span>';
+    }else{
+      $("toolsCurrentClass").innerHTML = `
+        <span class="badge">Class｜班级：${escapeHtml(currentClass)}</span>
+        <span class="badge">Present｜在场：${g.present.length}/${g.students.length}</span>
+        <span class="badge">Absent｜缺勤：${g.absent.length}</span>
+        <span class="badge">Template｜模板：${escapeHtml(currentTemplate)}</span>
+      `;
+    }
+  }
+}
+
+function renderReportContextStrip(){
+  if(!$('reportContextStrip')) return;
+  const g = attendanceGroups();
+  $('reportContextStrip').innerHTML = `
+    <p><b>Current report context｜当前报告信息</b><br><span class="muted">Reports are generated from the selected class only.｜报告只根据当前班级生成。</span></p>
+    <div class="context-left">
+      <span class="badge">Class｜班级：${escapeHtml(currentClass || 'No Class')}</span>
+      <span class="badge">Date｜日期：${escapeHtml(currentSessionDate || new Date().toLocaleDateString())}</span>
+      <span class="badge">Present｜在场：${g.present.length}/${g.students.length}</span>
+      <span class="badge">Absent｜缺勤：${g.absent.length}</span>
+    </div>
+  `;
+}
+
+
+function buildContextBadges(){
+  const g = attendanceGroups();
+  if(!currentClass){
+    return '<span class="context-title">Current Class｜当前班级</span><span class="badge warning-badge">No class selected｜未选择班级</span><span class="badge">Add or select a class first｜请先添加或选择班级</span>';
+  }
+  return `
+    <span class="context-title">Current Class｜当前班级</span>
+    <span class="badge">${escapeHtml(currentClass)}</span>
+    <span class="badge">Present｜在场：${g.present.length}/${g.students.length}</span>
+    <span class="badge">Absent｜缺勤：${g.absent.length}</span>
+    <span class="badge">Date｜日期：${escapeHtml(currentSessionDate || new Date().toLocaleDateString())}</span>
+  `;
+}
+function renderGlobalContextBars(){
+  ["dashboardContextBar","attendanceContextBar","endClassContextBar"].forEach(id => {
+    if($(id)) $(id).innerHTML = buildContextBadges();
+  });
+}
+
+function updateDashboard(){
+  const students = listFrom("names");
+  const teams = listFrom("teams");
+  const acts = Array.from(new Set(records.filter(r => r.type !== "participation").map(r => r.type)));
+  if($("dashClass")) $("dashClass").textContent = currentClass || "No Class";
+  const g = attendanceGroups();
+  if($("dashInfo")) $("dashInfo").textContent = "Students: " + students.length + "｜Present: " + g.present.length + "｜Absent: " + g.absent.length + "｜Teams: " + teams.length + "｜Activities: " + acts.length;
+  if($("dashStudents")) $("dashStudents").textContent = students.length;
+  if($("dashTeams")) $("dashTeams").textContent = teams.length;
+  if($("dashActivities")) $("dashActivities").textContent = acts.length;
+  updateDashboardStatusCenter();
+  if($("currentClassBadge")) $("currentClassBadge").textContent = "Class｜班级：" + (currentClass || "No Class");
+  if($("templateBadge")) $("templateBadge").textContent = "Template｜模板：" + currentTemplate;
+  updateSessionStatus();
+  renderCurrentClassPanel();
+  renderOperationalContext();
+}
+function renderClassOptions(){
+  const names = Object.keys(classes);
+  const placeholder = '<option value="" class="class-select-empty">Select class｜选择班级</option>';
+  const options = names.map(name => '<option value="' + escapeHtml(name) + '">' + escapeHtml(name) + '</option>').join("");
+  ["classSelect","dashClassSelect"].forEach(id => { if($(id)) $(id).innerHTML = placeholder + options; });
+  renderClassCards();
+  renderCurrentClassPanel();
+  renderAttendance();
+  checkDuplicateNames();
+  if(currentClass && classes[currentClass]){
+    if($("classSelect")) $("classSelect").value = currentClass;
+    if($("dashClassSelect")) $("dashClassSelect").value = currentClass;
+    fillClassForm(currentClass);
+  }
+}
+function fillClassForm(name){
+  const item = classes[name];
+  if(!item) return;
+  $("className").value = name;
+  $("classRoster").value = item.roster || "";
+  $("classRewards").value = item.rewards || "";
+  $("classTeams").value = item.teams || "";
+}
+function saveClass(){
+  const duplicates = checkDuplicateNames();
+  if(duplicates.length) toast("发现重复姓名：" + duplicates.join("、"));
+  const name = $("className").value.trim() || "My Class";
+  const oldName = currentClass;
+  let preservedState = oldName && classes[oldName] ? (classes[oldName].state || currentStateSnapshot()) : currentStateSnapshot();
+  if(oldName && oldName !== name && classes[oldName]) delete classes[oldName];
+  classes[name] = {
+    ...(classes[name] || {}),
+    roster:$("classRoster").value,
+    rewards:$("classRewards").value,
+    teams:$("classTeams").value,
+    state: preservedState,
+    updatedAt: new Date().toLocaleString()
+  };
+  currentClass = name;
+  restoreClassState(name);
+  applyClassToTools();
+  saveData();
+  renderClassOptions();
+  updateDashboard();
+  toast("Class saved 班级已保存");
+}
+function loadClass(name){
+  if(!name || !classes[name]) return;
+  persistCurrentClassState();
+  currentClass = name;
+  fillClassForm(name);
+  restoreClassState(name);
+  applyClassToTools();
+  renderAttendance();
+  saveData();
+  renderClassOptions();
+  renderRecords();
+  updateDashboard();
+  toast("Opened " + name + "｜已打开班级");
+}
+function applyClassToTools(){
+  $("names").value = $("classRoster").value || "";
+  $("rewards").value = $("classRewards").value || "";
+  $("teams").value = $("classTeams").value || "";
+  makeScores();
+  renderAttendance();
+  hydrateRewardCards();
+  renderLeaderboard();
+  updateDashboard();
+}
+function saveCurrentClass(){
+  if(currentClass) $("className").value = currentClass;
+  $("classRoster").value = $("names").value;
+  $("classRewards").value = $("rewards").value;
+  $("classTeams").value = $("teams").value;
+  saveClass();
+}
+function newClassForm(){
+  persistCurrentClassState();
+  currentClass = null;
+  resetSessionStateForNewClass();
+  $("className").value = "";
+  $("classRoster").value = "";
+  $("classRewards").value = "";
+  $("classTeams").value = "";
+  $("names").value = "";
+  $("rewards").value = "";
+  $("teams").value = "";
+  renderClassOptions();
+  renderRecords();
+  updateDashboard();
+  toast("New class form 新建班级");
+}
+function demoClass(){
+  resetSessionStateForNewClass();
+  $("className").value = "Demo Class";
+  $("classRoster").value = "Lina\nOmar\nMariam\nAli\nSara\nYousef\nNoura\nHamad\nLayla\nZayed";
+  $("classRewards").value = "Sticker 贴纸*6\nLucky Next Time 下次好运*4\nBonus Question 加题机会*3\nHigh Five 击掌奖励*3";
+  $("classTeams").value = "Red Team\nBlue Team\nGreen Team\nGold Team";
+  attendance = {};
+  saveClass();
+  applyClassToTools();
+  markAllActive();
+}
+function clearDemo(){
+  if(classes["Demo Class"]){
+    delete classes["Demo Class"];
+    if(currentClass === "Demo Class") currentClass = null;
+    saveData();
+    renderClassOptions();
+    updateDashboard();
+    toast("Demo cleared 示范数据已清空");
+  }
+}
+function templateClass(count, teams){
+  if(!$("className").value.trim()) $("className").value = count <= 10 ? "Small Class" : (count <= 24 ? "Medium Class" : "Large Class");
+  $("classRoster").value = Array.from({length:count}, (_,i) => "Student " + (i+1)).join("\n");
+  $("classTeams").value = Array.from({length:teams}, (_,i) => "Team " + (i+1)).join("\n");
+}
+function rewardTemplate(type){
+  const templates = {
+    stickers:"Sticker 贴纸*8\nStar Card 星星卡*4\nLucky Next Time 下次好运*4\nBonus Question 加题机会*3",
+    points:"+1 Point 加1分*8\n+2 Points 加2分*4\nLucky Next Time 下次好运*4\nTeacher’s Choice 老师决定*2",
+    cards:"High Five 击掌奖励*5\nChoose a Song 选一首歌*2\nBonus Question 加题机会*4\nEncouragement Card 鼓励卡*5"
+  };
+  $("classRewards").value = templates[type] || templates.stickers;
+}
+
+function templateData(type){
+  return {
+    warmup:{name:"Warm-up 热身课堂", tool:"picker", timer:3, reason:"Fast Response 反应快", rewards:"High Five 击掌奖励*5\nSticker 贴纸*4\nLucky Next Time 下次好运*3"},
+    vocab:{name:"Vocabulary Review 词汇复习", tool:"draw", timer:5, reason:"Good Answer 回答正确", rewards:"Sticker 贴纸*7\nBonus Question 加题机会*4\n+1 Point 加1分*5\nLucky Next Time 下次好运*3"},
+    reading:{name:"Reading Class 阅读课", tool:"timer", timer:8, reason:"Good Pronunciation 发音好", rewards:"Reading Star 阅读之星*4\nHigh Five 击掌奖励*4\nLucky Next Time 下次好运*3"},
+    competition:{name:"Group Competition 小组竞赛", tool:"points", timer:6, reason:"Teamwork 合作好", rewards:"+2 Points 加2分*5\nTeam Bonus 小组奖励*4\nLucky Next Time 下次好运*2"},
+    reward:{name:"End-of-Class Reward 课后抽奖", tool:"draw", timer:3, reason:"Good Behavior 课堂表现好", rewards:"Sticker 贴纸*8\nStar Card 星星卡*4\nTeacher’s Choice 老师决定*2\nLucky Next Time 下次好运*5"}
+  }[type];
+}
+function applyActivityTemplate(type){
+  const data = templateData(type);
+  if(!data) return;
+  pendingTemplate = type;
+  $("templateTitle").textContent = data.name + "｜模板预览";
+  $("templatePreview").innerHTML = `
+    <p><b>Tool｜工具：</b>${data.tool}</p>
+    <p><b>Timer｜时间：</b>${data.timer} minutes</p>
+    <p><b>Reason｜积分理由：</b>${data.reason}</p>
+    <p><b>Rewards｜奖品：</b><br>${escapeHtml(data.rewards).replace(/\n/g,"<br>")}</p>
+  `;
+  $("templateModal").classList.add("show");
+}
+function confirmTemplateApply(){
+  if(!pendingTemplate) return;
+  hideModal("templateModal");
+  applyTemplateNow(pendingTemplate);
+  pendingTemplate = null;
+}
+
+function applyTemplateNow(type){
+  const data = {
+    warmup:{name:"Warm-up 热身课堂", tool:"picker", timer:3, reason:"Fast Response 反应快", rewards:"High Five 击掌奖励*5\nSticker 贴纸*4\nLucky Next Time 下次好运*3"},
+    vocab:{name:"Vocabulary Review 词汇复习", tool:"draw", timer:5, reason:"Good Answer 回答正确", rewards:"Sticker 贴纸*7\nBonus Question 加题机会*4\n+1 Point 加1分*5\nLucky Next Time 下次好运*3"},
+    reading:{name:"Reading Class 阅读课", tool:"timer", timer:8, reason:"Good Pronunciation 发音好", rewards:"Reading Star 阅读之星*4\nHigh Five 击掌奖励*4\nLucky Next Time 下次好运*3"},
+    competition:{name:"Group Competition 小组竞赛", tool:"points", timer:6, reason:"Teamwork 合作好", rewards:"+2 Points 加2分*5\nTeam Bonus 小组奖励*4\nLucky Next Time 下次好运*2"},
+    reward:{name:"End-of-Class Reward 课后抽奖", tool:"draw", timer:3, reason:"Good Behavior 课堂表现好", rewards:"Sticker 贴纸*8\nStar Card 星星卡*4\nTeacher’s Choice 老师决定*2\nLucky Next Time 下次好运*5"}
+  }[type];
+  if(!data) return;
+  currentTemplate = data.name;
+  $("rewards").value = data.rewards;
+  $("timerMin").value = data.timer;
+  Array.from($("reason").options).forEach((option, index) => {
+    if(option.textContent === data.reason) $("reason").selectedIndex = index;
+  });
+  saveCurrentClass();
+  setToolByName(data.tool);
+  goName("tools");
+  toast("Template applied 模板已应用");
+}
+function quoteCSV(value){ return '"' + String(value == null ? "" : value).replace(/"/g,'""') + '"'; }
+function downloadFile(name, content, type){
+  const blob = new Blob([content], {type:type || "text/plain"});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url; link.download = name; link.click();
+  URL.revokeObjectURL(url);
+}
+function exportCSV(){
+  const rows = [["Time","Type","Detail","Value"]].concat(records.map(r => [r.time,r.type,r.detail,r.value]));
+  const csv = rows.map(row => row.map(quoteCSV).join(",")).join("\n");
+  downloadFile("classkit-session-records.csv", csv, "text/csv");
+}
+function exportAll(){
+  persistCurrentClassState();
+  downloadFile("classkit-data-backup.json", JSON.stringify(getClassKitData(), null, 2), "application/json");
+}
+$("importFile").addEventListener("change", event => {
+  const file = event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try{
+      const data = JSON.parse(reader.result);
+      applyClassKitData(data);
+      saveData();
+      renderClassOptions();
+      renderRecords();
+      updateDashboard();
+      toast("Imported 已导入");
+    }catch(error){ toast("Import failed 导入失败"); }
+  };
+  reader.readAsText(file);
+});
+
+function archiveLesson(){
+  const summary = buildReport("teacher");
+  const g = attendanceGroups();
+  const item = {
+    time:new Date().toLocaleString(),
+    className:currentClass || "Untitled",
+    date:currentSessionDate || new Date().toLocaleDateString(),
+    present:g.present.length,
+    absent:g.absent.length,
+    picked:records.filter(r=>r.type==="pick").length,
+    rewards:records.filter(r=>r.type==="reward").length,
+    report:summary
+  };
+  lessonArchives.unshift(item);
+  lessonArchives = lessonArchives.slice(0,30);
+  saveData();
+  renderLessonArchive();
+  toast("Lesson archived 本节课已归档");
+}
+function renderLessonArchive(){
+  if(!$('lessonArchive')) return;
+  $('lessonArchive').innerHTML = (lessonArchives || []).map((item,idx)=>`<div class="archive-item">
+    <b>${escapeHtml(item.className)}｜${escapeHtml(item.date)}</b>
+    <span>Present ${item.present}｜Absent ${item.absent}｜Picked ${item.picked}｜Rewards ${item.rewards}</span>
+    <div class="report-actions"><button class="ghost" onclick="copyArchivedReport(${idx})">Copy 复制</button></div>
+  </div>`).join("") || '<div class="empty-state">No archived lessons yet｜暂无归档课堂</div>';
+}
+function copyArchivedReport(index){
+  const item = (lessonArchives || [])[index];
+  if(!item) return;
+  navigator.clipboard.writeText(item.report || "");
+  toast("Archived report copied 已复制归档报告");
+}
+
+function confirmDo(type){
+  pending = type;
+  let message = "This action cannot be undone. 是否继续？";
+  let helper = "危险操作请输入 RESET 后再确认。";
+  let needsResetText = true;
+  if(type === "all") message = "Clear All Data｜这会删除所有班级、课堂记录、积分、参与统计和归档报告，无法撤销。";
+  if(type === "deleteClass") message = "Delete Class｜这会删除当前班级及其已保存的课堂数据，其他班级不会受影响。";
+  if(type === "records"){
+    message = "Reset Today’s Session｜这只会清空当前班级今天这节课的记录、积分和参与统计，不会删除班级名单。";
+    helper = "点击 Confirm 即可重置本节课；不会删除班级和学生名单。";
+    needsResetText = false;
+  }
+  $("confirmText").textContent = message;
+  if($("confirmHelper")) $("confirmHelper").textContent = helper;
+  $("confirmInput").value = "";
+  $("confirmInput").style.display = needsResetText ? "block" : "none";
+  $("confirm").classList.add("show");
+  if(needsResetText) setTimeout(() => $("confirmInput") && $("confirmInput").focus(), 60);
+}
+function doConfirm(){
+  if(["all","deleteClass"].includes(pending) && $("confirmInput").value.trim() !== "RESET"){ toast("请输入 RESET 确认"); return; }
+  hideModal("confirm");
+  if(pending === "all"){
+    if(cloudUser) clearCurrentCloudData();
+    else { localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(LEGACY_STORAGE_KEY); }
+    classes = {}; currentClass = null; records = []; scores = {}; participation = {}; manualParticipation = {}; attendance = {}; currentTemplate = "Default"; actionStack = []; currentSessionDate = ""; sessionStarted = false; lessonArchives = [];
+    newClassForm();
+  }
+  if(pending === "records"){
+    records = [];
+    scores = {};
+    participation = {};
+    doneDraw = [];
+    donePick = [];
+    actionStack = [];
+    currentSessionDate = new Date().toLocaleDateString();
+    sessionStarted = false;
+    markAllActive();
+    renderScores();
+    renderRecords();
+    updateDashboard();
+    applyClassToTools();
+  }
+  if(pending === "deleteClass"){
+    if(currentClass) delete classes[currentClass];
+    currentClass = Object.keys(classes)[0] || null;
+    if(currentClass){ fillClassForm(currentClass); restoreClassState(currentClass); applyClassToTools(); }
+    else { newClassForm(); }
+  }
+  saveData(); renderClassOptions(); renderRecords(); updateDashboard(); toast("Done 已完成");
+}
+function toggleSound(){
+  sound = !sound;
+  $("soundBtn").innerHTML = sound ? "<b>声音开</b><small>Sound ON</small>" : "<b>声音关</b><small>Sound OFF</small>";
+}
+function toggleTheme(){ document.body.classList.toggle("dark"); }
+function toggleFull(){
+  if(document.fullscreenElement) document.exitFullscreen();
+  else document.documentElement.requestFullscreen();
+}
+function toggleClassMode(){
+  document.body.classList.toggle("class-mode-active");
+  document.body.classList.remove("edit");
+  setMode(false);
+}
+function togglePresent(){ toggleClassMode(); }
+function newRound(){
+  resetDraw(); resetPicker(); doneDraw = []; donePick = [];
+  updateSessionStatus();
+  toast("New round 新一轮");
+}
+document.addEventListener("keydown", event => {
+  if(event.code === "Space" && $("tools").classList.contains("on")){
+    event.preventDefault();
+    runTool();
+  }
+});
+
+/* v21 function refinements: keep existing features, make them safer and more product-ready */
+function copyText(text){
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(text).then(()=>toast("Copied 已复制")).catch(()=>fallbackCopy(text));
+  }else{
+    fallbackCopy(text);
+  }
+}
+function fallbackCopy(text){
+  const area=document.createElement("textarea");
+  area.value=text; area.setAttribute("readonly",""); area.style.position="fixed"; area.style.left="-9999px";
+  document.body.appendChild(area); area.select();
+  try{document.execCommand("copy"); toast("Copied 已复制");}catch(e){toast("Copy failed 请手动复制");}
+  document.body.removeChild(area);
+}
+function copyReport(){ copyText(buildReport(reportType || "teacher")); }
+function copyReportType(type){ setReportType(type); copyText(buildReport(type)); }
+function printReportType(type){ setReportType(type); printReport(); }
+function copyArchivedReport(index){
+  const item = (lessonArchives || [])[index];
+  if(!item) return;
+  copyText(item.report || "");
+}
+function runTool(){
+  if(!availableStudents().length && ["draw","picker","group"].includes(currentTool)){
+    toast("No Present students 请先确认出勤");
+    goName("attendance");
+    return;
+  }
+  const actions = {draw:drawReward, picker:pickName, group:makeGroups, points:makeScores, timer:startTimer};
+  actions[currentTool]();
+}
+function printReport(){
+  const text = buildReport(reportType || "teacher");
+  const win = window.open("", "_blank");
+  if(!win){ toast("Please allow pop-ups 请允许弹出窗口"); return; }
+  const reportTitle = reportType === "parent" ? "Parent Report" : reportType === "admin" ? "School Report" : "Teacher Notes";
+  const g = attendanceGroups();
+  const metaRows = [
+    ["Class", currentClass || "Untitled"],
+    ["Date", new Date().toLocaleString()],
+    ["Present", String(g.present.length)],
+    ["Absent", String(g.absent.length)],
+    ["Template", currentTemplate || "Default"]
+  ];
+  win.document.write(`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>ClassKit — ${reportTitle}</title><style>
+    @page{size:A4;margin:18mm}*{box-sizing:border-box}body{font-family:Inter,'SF Pro Text','SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Noto Sans SC','Microsoft YaHei',Arial,sans-serif;line-height:1.72;color:#111827;background:#f7f8fa;margin:0;padding:28px}.page{max-width:820px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:22px;padding:32px}.brand{font-size:13px;font-weight:800;letter-spacing:-.03em;color:#111827}.brand span{color:#6b7280}.topline{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;border-bottom:1px solid #e5e7eb;padding-bottom:18px;margin-bottom:18px}h1{font-size:28px;line-height:1.1;margin:10px 0 0;letter-spacing:-.04em}.generated{font-size:12px;color:#6b7280;margin-top:6px}.meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:0 0 20px}.meta-card{border:1px solid #e5e7eb;border-radius:12px;padding:9px 10px;background:#fafafa}.meta-card b{display:block;font-size:11px;color:#6b7280}.meta-card span{font-size:13px;font-weight:700}.report{white-space:pre-wrap;font-size:14px;border-top:1px solid #eef0f3;padding-top:18px}.actions{margin-top:22px;display:flex;justify-content:flex-end}button{padding:10px 16px;border-radius:12px;border:1px solid #111827;background:#111827;color:white;font-weight:700}@media print{body{background:#fff;padding:0}.page{border:none;border-radius:0;padding:0}.actions{display:none}.meta-grid{break-inside:avoid}}
+  </style>
+
+
+<style>
+/* Product refinement v33: clearer class center, report context, cleaner class-mode */
+.class-page-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-top:18px}
+.class-page-heading h2{margin:0 0 4px}.class-page-heading p{margin:0}
+.class-editor-panel{scroll-margin-top:88px}
+.class-editor-panel .required-pill{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:4px 8px;margin:8px 6px 0 0;font-size:11.5px;font-weight:650;color:var(--muted);background:var(--surface)}
+.report-context-strip{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:12px 0;padding:14px 16px}
+.report-context-strip .context-left{display:flex;gap:7px;flex-wrap:wrap}.report-context-strip p{margin:0;font-size:13px}
+.class-mode-active .tool-current-class{display:none!important}
+.global-context-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px;padding:10px 12px;border:1px solid var(--line);background:rgba(255,255,255,.68);border-radius:14px;color:var(--muted);font-size:12.5px}
+.global-context-bar .context-title{font-weight:750;color:var(--ink);margin-right:2px}
+.empty-state h3{margin:0 0 6px}.empty-state p{margin:0;color:var(--muted);line-height:1.55}
+@media(max-width:560px){.class-page-heading{display:block}.class-page-heading .actions{margin-top:10px}.report-context-strip{display:block}.report-context-strip .context-left{margin-top:8px}.global-context-bar{font-size:12px}}
+</style>
+
+
+<style id="release-final-polish-v35">
+/* V35: final release polish only — no new core features */
+textarea{min-height:112px;line-height:1.55;resize:vertical}
+#classRoster{min-height:160px}.report textarea,#teacherNote{min-height:92px}
+.report-card-grid .report-card{display:flex;flex-direction:column}.report-card .report-actions{margin-top:auto}
+.empty-state{border:1px dashed #d9dee8;border-radius:14px;background:#fbfcfd;padding:14px}
+.empty-action{background:#fff}.warning-badge{background:#fff8ea!important;border-color:#ead7b5!important;color:#7a4f1c!important}
+.danger-zone .setting-body p{margin-top:0}.danger-note{font-size:12.5px;color:#8a4b43;background:#fff7f6;border:1px solid #f0d0cd;border-radius:12px;padding:10px 12px;margin-bottom:10px}
+#confirmInput{letter-spacing:.08em;text-transform:uppercase}.confirm-helper{font-size:12.5px;color:var(--muted);margin-top:8px}
+@media(max-width:560px){
+  button{min-height:44px}.report-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.report-tabs button{padding:9px 4px;font-size:12px}
+  .add-class-quick-entry{bottom:104px!important}.app:has(input:focus),.app:has(textarea:focus){padding-bottom:18px!important}
+  body:has(input:focus) .add-class-quick-entry,body:has(textarea:focus) .add-class-quick-entry{display:none!important}
+  body:has(input:focus) .mobile-bottom-nav,body:has(textarea:focus) .mobile-bottom-nav{display:none!important}
+  .class-editor-panel{scroll-margin-top:18px}.report-context-strip .context-left{display:grid!important;grid-template-columns:1fr 1fr;gap:6px}
+}
+</style>
+
+
+
+<style id="classkit-font-consistency-v37">
+/* V37: font consistency polish only — no function or layout changes */
+:root{
+  --tk-font-ui:"Inter","SF Pro Text","SF Pro Display",-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC","Microsoft YaHei",Arial,sans-serif;
+  --tk-font-display:"Inter","SF Pro Display","SF Pro Text",-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC","Microsoft YaHei",Arial,sans-serif;
+  --tk-font-mono:"SF Mono","Roboto Mono","Consolas",monospace;
+}
+html,body,
+button,input,textarea,select,
+.card,.hero,.minimal-hero,.product-hero-v18,.result,.modebar,.session-strip,
+.main-nav,.tabs,.mobile-bottom-nav,.report,.report-box,.modal,.toast,.badge{
+  font-family:var(--tk-font-ui)!important;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
+}
+h1,h2,h3,
+.brand,.big,.timer,.kpi b,.status-tile b,.mini-stat b,
+.class-card h3,.report-card h2,.template-card h3{
+  font-family:var(--tk-font-display)!important;
+}
+button, .main-nav button, .tabs button, .mobile-bottom-nav button{
+  font-weight:650!important;
+  letter-spacing:-.01em!important;
+}
+button b{font-family:var(--tk-font-ui)!important;font-weight:680!important;letter-spacing:-.012em!important}
+button small{font-family:var(--tk-font-ui)!important;font-weight:520!important;letter-spacing:0!important}
+input,textarea,select,label{
+  font-family:var(--tk-font-ui)!important;
+  font-weight:500;
+}
+textarea,.report,.report-box,#reportText,#teacherNote{
+  line-height:1.68!important;
+  letter-spacing:-.004em!important;
+}
+.brand{font-weight:760!important;letter-spacing:-.03em!important}
+.brand span{font-weight:620!important}
+.eyebrow,.badge,.save-status,.hint,.status,.muted,.empty-state p{
+  letter-spacing:-.003em!important;
+}
+.kpi b,.timer{font-variant-numeric:tabular-nums!important}
+#confirmInput{font-family:var(--tk-font-mono)!important;font-weight:700!important}
+</style>
+
+
+
+<style id="classkit-tools-title-final-fix-v39">
+/* V39: Fix Tools page title typography only.
+   The previous fix targeted navigation labels; this one targets the Tools page heading itself. */
+#tools .simplified-tools-hero h1,
+section#tools .hero.simplified-tools-hero h1{
+  font-family:var(--tk-font-display, Inter, "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Noto Sans SC", "Microsoft YaHei", Arial, sans-serif) !important;
+  font-size:clamp(34px, 4.2vw, 52px) !important;
+  line-height:1.04 !important;
+  font-weight:780 !important;
+  letter-spacing:-.052em !important;
+  margin:6px 0 12px !important;
+}
+#tools .simplified-tools-hero .eyebrow{
+  font-size:12.5px !important;
+  line-height:1.25 !important;
+  font-weight:720 !important;
+  letter-spacing:.01em !important;
+}
+#tools .simplified-tools-hero p.muted{
+  font-size:17px !important;
+  line-height:1.62 !important;
+  font-weight:500 !important;
+  letter-spacing:-.006em !important;
+  color:var(--muted) !important;
+}
+@media(max-width:560px){
+  #tools .simplified-tools-hero h1,
+  section#tools .hero.simplified-tools-hero h1{
+    font-size:32px !important;
+    letter-spacing:-.045em !important;
+  }
+  #tools .simplified-tools-hero p.muted{font-size:15px !important;}
+}
+</style>
+
+</head><body><main class="page"><div class="topline"><div><div class="brand">Class<span>Kit</span></div><h1>${reportTitle}</h1><div class="generated">Generated by ClassKit</div></div></div><div class="meta-grid">${metaRows.map(row => `<div class="meta-card"><b>${row[0]}</b><span>${escapeHtml(row[1])}</span></div>`).join("")}</div><div class="report">${escapeHtml(text)}</div><div class="actions"><button onclick="window.print()">Print</button></div></main></body>
+
+<!--
+SUPABASE SQL FOR CLASSKIT CLOUD SAVE
+Run this in Supabase SQL Editor before using cloud login:
+
+create table if not exists public.user_data (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  data jsonb not null default '{}'::jsonb,
+  updated_at timestamptz not null default now(),
+  unique(user_id)
+);
+
+alter table public.user_data enable row level security;
+
+drop policy if exists "Users can read own ClassKit data" on public.user_data;
+create policy "Users can read own ClassKit data"
+on public.user_data for select
+to authenticated
+using (auth.uid() = user_id);
+
+drop policy if exists "Users can insert own ClassKit data" on public.user_data;
+create policy "Users can insert own ClassKit data"
+on public.user_data for insert
+to authenticated
+with check (auth.uid() = user_id);
+
+drop policy if exists "Users can update own ClassKit data" on public.user_data;
+create policy "Users can update own ClassKit data"
+on public.user_data for update
+to authenticated
+using (auth.uid() = user_id)
+with check (auth.uid() = user_id);
+-- Also turn OFF email confirmation in Supabase Auth settings for username-password login.
+-- Replace SUPABASE_URL and SUPABASE_ANON_KEY constants in the script before deploying to Vercel.
+-- Never expose service_role key in frontend code.
+-->
+
+</html>`);
+  win.document.close(); win.focus();
+}
+function openAddClassEntry(){
+  goName("class");
+  newClassForm();
+  setTimeout(function(){
+    const panel = document.getElementById("addClassPanel") || document.querySelector(".class-editor-panel") || document.getElementById("className");
+    if(panel && panel.scrollIntoView) panel.scrollIntoView({behavior:"smooth", block:"start"});
+    if($("className")) $("className").focus();
+  }, 80);
+}
+
+initializeCloudApp();
+setTool("draw", document.querySelector(".tabs button"));
+resetTimer();
+setMode(false);
+renderRecords();
+updateDashboard();
+</script>
+
+<div class="class-mode-controls">
+  <button class="primary" onclick="runTool()">Start</button>
+  <button class="ghost" onclick="undoLastAction()">Undo</button>
+  <button class="ghost" onclick="nextFlow()">Next</button>
+  <button class="gold" onclick="openEndClass()">End</button>
+</div>
+
+<button class="add-class-quick-entry" onclick="openAddClassEntry()"><b>Add Class</b><small>添加班级</small></button>
+<div class="mobile-bottom-nav">
+  <button class="on" data-mobile="home" onclick="goName('home')">Home</button>
+  <button data-mobile="dashboard" onclick="goName('dashboard')">Class</button>
+  <button data-mobile="tools" onclick="goName('tools')">Tools</button>
+  <button data-mobile="records" onclick="goName('records')">Reports</button>
+  <button data-mobile="settings" onclick="goName('settings')">Settings</button>
+</div>
+
+</body>
+
+
+<!--
+SUPABASE SQL FOR CLASSKIT CLOUD SAVE
+Run this in Supabase SQL Editor before using cloud login:
+
+create table if not exists public.user_data (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  data jsonb not null default '{}'::jsonb,
+  updated_at timestamptz not null default now(),
+  unique(user_id)
+);
+
+alter table public.user_data enable row level security;
+
+drop policy if exists "Users can read own ClassKit data" on public.user_data;
+create policy "Users can read own ClassKit data"
+on public.user_data for select
+to authenticated
+using (auth.uid() = user_id);
+
+drop policy if exists "Users can insert own ClassKit data" on public.user_data;
+create policy "Users can insert own ClassKit data"
+on public.user_data for insert
+to authenticated
+with check (auth.uid() = user_id);
+
+drop policy if exists "Users can update own ClassKit data" on public.user_data;
+create policy "Users can update own ClassKit data"
+on public.user_data for update
+to authenticated
+using (auth.uid() = user_id)
+with check (auth.uid() = user_id);
+-- Also turn OFF email confirmation in Supabase Auth settings for username-password login.
+-- Replace SUPABASE_URL and SUPABASE_ANON_KEY constants in the script before deploying to Vercel.
+-- Never expose service_role key in frontend code.
+-->
+
+</html>
